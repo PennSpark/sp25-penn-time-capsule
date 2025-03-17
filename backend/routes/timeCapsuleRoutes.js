@@ -1,5 +1,6 @@
 const express = require("express");
 const TimeCapsule = require("../models/TimeCapsule");
+const User = require("../models/User");
 const authenticateToken = require("../middleware/authenticateToken"); // Middleware for JWT authentication
 require("dotenv").config();
 
@@ -18,6 +19,16 @@ router.post("/create", authenticateToken, async (req, res) => {
     });
 
     await newCapsule.save();
+
+    // update user's timecapsules array
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { timeCapsules: newCapsule._id },
+      },
+      { new: true }
+    );
+
     res.status(201).json({
       message: "Time capsule created successfully",
       capsule: newCapsule,
@@ -29,10 +40,10 @@ router.post("/create", authenticateToken, async (req, res) => {
   }
 });
 
-// Join Time Capsule
+// Join Time Capsule - TESTED AND WORKING
 router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
   const { capsuleId } = req.params;
-  const user = req.user; // Get the user from JWT token
+  const userId = req.user.id; // Get the user from JWT token
 
   try {
     const capsule = await TimeCapsule.findById(capsuleId);
@@ -40,15 +51,24 @@ router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "Time capsule not found" });
 
     // Check if the user is already a member
-    if (capsule.members.includes(user._id)) {
+    if (capsule.members.includes(userId)) {
       return res
         .status(400)
         .json({ message: "Already a member of this time capsule" });
     }
 
-    // Add the user to the capsule's members
-    capsule.members.push(user._id);
+    // add the user to the capsule's members
+    capsule.members.push(userId);
     await capsule.save();
+
+    // update user's timecapsules array
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { timeCapsules: capsule._id },
+      },
+      { new: true }
+    );
 
     res.json({ message: "Joined time capsule successfully", capsule });
   } catch (err) {
@@ -58,10 +78,10 @@ router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
   }
 });
 
-// Leave Time Capsule
+// Leave Time Capsule - TESTED AND WORKING
 router.delete("/leave/:capsuleId", authenticateToken, async (req, res) => {
   const { capsuleId } = req.params;
-  const { userId } = req.body; // The user who is leaving the capsule
+  const userId = req.user.id; // The user who is leaving the capsule
 
   try {
     const capsule = await TimeCapsule.findById(capsuleId);
@@ -72,6 +92,14 @@ router.delete("/leave/:capsuleId", authenticateToken, async (req, res) => {
     if (capsule.owner.toString() === userId) {
       // Delete the time capsule (owner is leaving, remove all members)
       await capsule.deleteOne();
+
+      // remove time capsule from all users who are members of the capsule
+      await User.updateMany(
+        { timeCapsules: capsuleId },
+        { $pull: { timeCapsules: capsuleId } },
+        { new: true }
+      );
+
       return res.json({
         message: "Time Capsule deleted because the owner left.",
       });
@@ -83,22 +111,29 @@ router.delete("/leave/:capsuleId", authenticateToken, async (req, res) => {
     );
     await capsule.save();
 
+    // update user's timecapsules array
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { timeCapsules: capsuleId },
+      },
+      { new: true }
+    );
+
     res.json({ message: "User left the time capsule." });
   } catch (err) {
     res.status(500).json({ message: "Server Error" });
   }
 });
 
-// Get Time Capsules
+// Get User's Time Capsules
 router.get("/get", authenticateToken, async (req, res) => {
   try {
-    // Get the user ID from the authenticated token (set by the middleware)
-    const userId = req.user._id;
+    // get the user ID from the authenticated token (middleware)
+    const userId = req.user.id;
 
-    // Find all time capsules where the user is a member
+    // find all time capsules where the user is a member
     const capsules = await TimeCapsule.find({ members: userId });
-
-    // Respond with the found capsules
     res.json(capsules);
   } catch (error) {
     console.error("Error retrieving time capsules:", error);
