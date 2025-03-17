@@ -5,8 +5,9 @@ const User = require("../models/User");
 require("dotenv").config();
 
 const router = express.Router();
+const tokenExpiration = "1d";
 
-// Register User
+// Register User - TESTED AND WORKING
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -19,7 +20,7 @@ router.post("/register", async (req, res) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: tokenExpiration,
     });
     res.json({ token, userId: user._id, username, email });
   } catch (err) {
@@ -27,9 +28,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login User
+// Login User - TESTED AND WORKING
 router.post("/login", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -40,9 +41,9 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid Credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: tokenExpiration,
     });
-    res.json({ token, userId: user._id, username, email });
+    res.json({ token, userId: user._id, email });
   } catch (err) {
     res.status(500).send("Server Error");
   }

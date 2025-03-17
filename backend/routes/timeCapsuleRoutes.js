@@ -1,11 +1,12 @@
 const express = require("express");
 const TimeCapsule = require("../models/TimeCapsule");
+const authenticateToken = require("../middleware/authenticateToken"); // Middleware for JWT authentication
 require("dotenv").config();
 
 const router = express.Router();
 
 // Create New Time Capsule
-router.post("/create", async (req, res) => {
+router.post("/create", authenticateToken, async (req, res) => {
   const { name } = req.body;
   const user = req.user; // Get user from JWT token (assuming you have middleware to verify JWT)
 
@@ -29,7 +30,7 @@ router.post("/create", async (req, res) => {
 });
 
 // Join Time Capsule
-router.post("/join/:capsuleId", async (req, res) => {
+router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
   const { capsuleId } = req.params;
   const user = req.user; // Get the user from JWT token
 
@@ -58,7 +59,7 @@ router.post("/join/:capsuleId", async (req, res) => {
 });
 
 // Leave Time Capsule
-router.delete("/leave/:capsuleId", async (req, res) => {
+router.delete("/leave/:capsuleId", authenticateToken, async (req, res) => {
   const { capsuleId } = req.params;
   const { userId } = req.body; // The user who is leaving the capsule
 
@@ -85,6 +86,23 @@ router.delete("/leave/:capsuleId", async (req, res) => {
     res.json({ message: "User left the time capsule." });
   } catch (err) {
     res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// Get Time Capsules
+router.get("/get", authenticateToken, async (req, res) => {
+  try {
+    // Get the user ID from the authenticated token (set by the middleware)
+    const userId = req.user._id;
+
+    // Find all time capsules where the user is a member
+    const capsules = await TimeCapsule.find({ members: userId });
+
+    // Respond with the found capsules
+    res.json(capsules);
+  } catch (error) {
+    console.error("Error retrieving time capsules:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
 });
 
