@@ -5,16 +5,16 @@ require("dotenv").config();
 
 const router = express.Router();
 
-// Create New Time Capsule
+// Create New Time Capsule - TESTED AND WORKING
 router.post("/create", authenticateToken, async (req, res) => {
   const { name } = req.body;
-  const user = req.user; // Get user from JWT token (assuming you have middleware to verify JWT)
+  const userId = req.user.id; // Get user from signed JWT token (authenicateToken middleware)
 
   try {
     const newCapsule = new TimeCapsule({
       name,
-      owner: user._id, // Set the user who created it as the owner
-      members: [user._id], // The user who created it will be added as a member
+      owner: userId, // Set the user who created it as the owner
+      members: [userId], // The user who created it will be added as a member
     });
 
     await newCapsule.save();

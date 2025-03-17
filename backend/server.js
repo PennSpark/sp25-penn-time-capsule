@@ -16,7 +16,7 @@ app.use(cors());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/files", fileRoutes);
-app.use("api/timecapsule", timeCapsuleRoutes);
+app.use("/api/timecapsule", timeCapsuleRoutes);
 
 // Start Server
 connectDB();
