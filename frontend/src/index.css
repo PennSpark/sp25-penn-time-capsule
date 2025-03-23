@@ -8,3 +8,180 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+
+#login-form {
+  width: 450px;
+  height: 650px;
+  background-color: rgba(0, 0, 0, 0.65);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  flex-shrink: 0;
+}
+
+#login-form h1 {
+  font-size: 40px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  margin-left: 30px;
+}
+
+#login-form .error-message p{
+  color:#E50914;
+  font-size: 15px;
+}
+#login-form .error-message {
+  margin-left: -130px;
+  margin-top: 10px;
+}
+
+#login-form .input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+#login-form input[type="text"],
+#login-form input[type="password"] {
+  width: 76%;
+  height: 50px;
+  margin-left: 40px;
+  margin-top: 10px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: transparent;
+  color: #FFFFFF;
+  font-size: 16px;
+  outline: none;
+}
+
+#login-form input:focus {
+  border: 3px solid White;
+}
+#login-form .input-group label {
+  position: absolute;
+  top: 50%;
+  left: 45px;
+  color: #aaa;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+#login-form input:focus ~ label,
+#login-form input:not(:placeholder-shown) ~ label {
+  top: 17px;
+  left: 45px;
+  font-size: 12px;
+}
+
+#login-form button {
+  background-color: #00ae97;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 76%;
+  margin-left: 40px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+
+#login-form button:hover {
+  background-color: #38ebd3;
+}
+
+#login-form #toggle-signin{
+  background-color: rgba(68, 68, 68, 0.6);
+  font-size: 18px;
+  border: 1px solid #353333;
+}
+
+#login-form #toggle-signin:hover {
+  background-color: #333;
+}
+
+#login-form p {
+  color: #eae2e2;
+  margin-top: 10px;
+  margin-left: 45%;
+}
+
+#login-form #fineprint {
+  font-size: 12px;
+  margin-top: 10px;
+  margin-left: 40px;
+  color: rgb(178, 163, 163);
+}
+
+#login-form #signup-redirect {
+  margin-top: 10px;
+  margin-left: 40px;
+  color: #b2a9a9;
+}
+
+#login-form a {
+  color: White;
+  text-decoration: none;
+}
+
+#login-form .input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+#login-form input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-left: 40px;
+  margin-top: 10px;
+  appearance: none;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  vertical-align: middle;
+}
+
+#login-form input[type="checkbox"]:checked {
+  background: #fff;
+  border-color: #000;
+}
+
+#login-form #checkbox-label {
+  margin-left: 20px;
+  margin-top: 9px;
+  color: white;
+  font-size: 15px;
+}
+
+#login-form input[type="checkbox"]:checked::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000;
+  font-size: 16px;
+}
+
+#login-form a:hover {
+  text-decoration: underline;
+}
