@@ -148,6 +148,6 @@ const Register: React.FC = () => {
       </section>
     </div>
   );
-};
+}
 
 export default Register;

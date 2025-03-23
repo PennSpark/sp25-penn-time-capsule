@@ -149,7 +149,7 @@ const Login: React.FC = () => {
           </p>
         </form>
       </section>
-    </div>
+     </div>
   );
 };
 
