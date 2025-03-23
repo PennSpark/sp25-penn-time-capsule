@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {useGoogleLogin} from '@react-oauth/google';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -33,6 +34,27 @@ const Register: React.FC = () => {
       setErrorMessage(true);
     }
   };
+
+  const googleSignup = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        // Send the access token to your backend endpoint
+        const res = await axios.post(`${backEndUrl}/auth/google/register`, {
+          access_token: tokenResponse.access_token,
+        });
+        // Optionally, you might want to log the user in immediately,
+        // or redirect them to a login page
+        navigate("/login");
+      } catch (error) {
+        console.error("Google signup error:", error);
+        setErrorMessage(true);
+      }
+    },
+    onError: (error) => {
+      console.error("Google signup failed:", error);
+      setErrorMessage(true);
+    },
+  });
 
   return (
     <div
@@ -105,8 +127,20 @@ const Register: React.FC = () => {
             </div>
           )}
           <button type="submit" className="bold-button">
-            Sign In
+            Sign Up
           </button>
+          <div className="flex items-center justify-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="mx-4 text-gray-500">or</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
+          <button 
+            type="button"
+            onClick = {() => googleSignup()}
+            className = 'google-button'>
+            Sign Up with Google
+          </button>
+
           <p id="signup-redirect">
             Already have an account? <a href="./login">Log In Now.</a>
           </p>

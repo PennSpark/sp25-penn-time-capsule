@@ -31,6 +31,7 @@
   color: #FFFFFF;
   margin-bottom: 20px;
   margin-left: 30px;
+  font-weight: 550;
 }
 
 #login-form .error-message p{
@@ -98,6 +99,25 @@
   margin-top: 30px;
   margin-bottom: 10px;
   font-size: 16px;
+}
+
+#login-form .google-button {
+  background-color: #DB4437;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 76%;
+  margin-left: 40px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+#login-form .google-button:hover {
+  background-color: #ea5a5a; /* Lighter shade example */
 }
 
 
