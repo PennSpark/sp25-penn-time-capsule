@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {useGoogleLogin} from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,7 +11,8 @@ const Register: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const backEndUrl: string = import.meta.env.backend_url || "http://localhost:8080";
+  const backEndUrl: string =
+    import.meta.env.backend_url || "http://localhost:8080";
 
   const handlePasswordChange = (event: any): void => {
     setPassword(event.target.value);
@@ -27,9 +28,13 @@ const Register: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = axios.post(`${backEndUrl}/register`, {username, email, password});
-      navigate('/login');
-    } catch(error) {
+      const response = axios.post(`${backEndUrl}/register`, {
+        username,
+        email,
+        password,
+      });
+      navigate("/login");
+    } catch (error) {
       console.error("Registration error:", error);
       setErrorMessage(true);
     }
@@ -134,10 +139,11 @@ const Register: React.FC = () => {
             <span className="mx-4 text-gray-500">or</span>
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
-          <button 
+          <button
             type="button"
-            onClick = {() => googleSignup()}
-            className = 'google-button'>
+            onClick={() => googleSignup()}
+            className="google-button"
+          >
             Sign Up with Google
           </button>
 
@@ -148,6 +154,6 @@ const Register: React.FC = () => {
       </section>
     </div>
   );
-}
+};
 
 export default Register;
