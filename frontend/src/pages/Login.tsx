@@ -82,10 +82,20 @@ const Login: React.FC = () => {
         left: 0,
         width: "100vw",
         height: "100vh",
-        backgroundImage: "url('/filmBackground.jpg')",
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
+        backgroundColor:"#ffda99",
+        backgroundImage: `
+        radial-gradient(at 72% 8%, hsla(205,57%,82%,1) 0px, transparent 50%),
+        radial-gradient(at 50% 71%, hsla(352,48%,52%,1) 0px, transparent 50%),
+        radial-gradient(at 35% 14%, hsla(214,73%,38%,1) 0px, transparent 50%),
+        radial-gradient(at 87% 68%, hsla(214,73%,38%,1) 0px, transparent 50%),
+        radial-gradient(at 100% 23%, hsla(210,50%,66%,1) 0px, transparent 50%),
+        radial-gradient(at 0% 88%, hsla(358,57%,82%,1) 0px, transparent 50%),
+        radial-gradient(at 73% 22%, hsla(210,0%,100%,1) 0px, transparent 50%),
+        radial-gradient(at 3% 3%, hsla(214,73%,38%,1) 0px, transparent 50%),
+        radial-gradient(at 28% 30%, hsla(210,50%,66%,1) 0px, transparent 50%),
+        radial-gradient(at 100% 83%, hsla(214,73%,38%,1) 0px, transparent 50%)`,
+        
+
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -93,7 +103,7 @@ const Login: React.FC = () => {
     >
       <section id="login-form">
         <form onSubmit={handleSubmit} autoComplete="off">
-          <h1>Sign In</h1>
+          <h1>Capsule</h1>
           <div className="input-group">
             <input
               type="text"
