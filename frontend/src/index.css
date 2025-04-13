@@ -15,19 +15,18 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Gradient variables */
-  --color-bg1: rgb(26, 88, 167);
-  --color-bg2: rgb(255, 255, 255);
-  --color1: 18, 113, 255;
-  --color2: 221, 74, 255;
-  --color3: 100, 220, 255;
-  --color4: 200, 50, 50;
-  --color5: 255, 255, 255;
-  --color-interactive: 140, 100, 255;
-  --circle-size: 80%;
-  --blending: hue;
+  --color-bg1: #114d92;
+  --color-bg2: rgb(181, 164, 233);
+  --color1: 204, 83, 81;
+  --color2: 49, 152, 255;
+  --color3: 235, 120, 143;
+  --color4: 86, 25, 156;
+  --color5: 74, 81, 213;
+  --color-interactive: 98, 102, 227;
+  --circle-size: 85%;
+  --blending:screen;
+
 }
-
-
 
 body {
   margin: 0;
