@@ -142,7 +142,7 @@ function Dashboard() {
             <div
               className="absolute z-20 menu-container"
               style={{
-                bottom: "80px",
+                bottom: "140px",
                 right: "32px",
               }}
             >
