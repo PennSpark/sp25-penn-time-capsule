@@ -1,6 +1,6 @@
+@import url("https://fonts.google.com/share?selection.family=Space+Grotesk:wght@300..700");
 @import "tailwindcss";
 
-@import url("https://fonts.google.com/share?selection.family=Space+Grotesk:wght@300..700");
 
 @tailwind base;
 @tailwind components;
@@ -147,12 +147,9 @@ body {
 
 .interactive {
   position: absolute;
-  background: radial-gradient(
-      circle at center,
+  background: radial-gradient(circle at center,
       rgba(var(--color-interactive), 0.8) 0,
-      rgba(var(--color-interactive), 0) 50%
-    )
-    no-repeat;
+      rgba(var(--color-interactive), 0) 50%) no-repeat;
   mix-blend-mode: var(--blending);
   width: 100%;
   height: 100%;
@@ -165,9 +162,11 @@ body {
   0% {
     transform: rotate(0deg);
   }
+
   50% {
     transform: rotate(180deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -177,9 +176,11 @@ body {
   0% {
     transform: translateY(-50%);
   }
+
   50% {
     transform: translateY(50%);
   }
+
   100% {
     transform: translateY(-50%);
   }
@@ -189,9 +190,11 @@ body {
   0% {
     transform: translateX(-50%) translateY(-10%);
   }
+
   50% {
     transform: translateX(50%) translateY(10%);
   }
+
   100% {
     transform: translateX(-50%) translateY(-10%);
   }
@@ -204,7 +207,7 @@ body {
 
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -215,30 +218,36 @@ body {
 
 
 #login-form {
-  width: 450px;
   height: 650px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
-  margin-top: 100px;
+  margin-top: 154px;
   margin-bottom: 100px;
   flex-shrink: 0;
 }
 
+
+
 #login-form h1 {
   font-size: 40px;
   color: #FFFFFF;
-  margin-bottom: 20px;
-  margin-left: 30px;
-  font-weight: 550;
+  text-align: center;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+
 }
 
-#login-form .error-message p{
-  color:#E50914;
+#login-form .error-message p {
+  color: #E50914;
   font-size: 15px;
 }
+
 #login-form .error-message {
   margin-left: -130px;
   margin-top: 10px;
@@ -257,17 +266,31 @@ body {
   margin-left: 40px;
   margin-top: 10px;
   padding: 15px;
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   border-radius: 4px;
-  background: transparent;
+  /* background: transparent; */
+  background: hsla(0, 0%, 100%, 0.2);
   color: #FFFFFF;
   font-size: 16px;
   outline: none;
+  width: 314;
+  height: 53;
+  top: 323px;
+  left: 31px;
+  border-radius: 8px;
+  padding-top: 15px;
+  padding-right: 26px;
+  padding-bottom: 15px;
+  padding-left: 26px;
+  gap: 10px;
+  box-shadow: 0px 4px 15px 0px hsla(0, 0%, 0%, 0.05);
+
 }
 
 #login-form input:focus {
   border: 3px solid White;
 }
+
 #login-form .input-group label {
   position: absolute;
   top: 50%;
@@ -279,12 +302,13 @@ body {
   transform: translateY(-50%);
 }
 
-#login-form input:focus ~ label,
-#login-form input:not(:placeholder-shown) ~ label {
+#login-form input:focus~label,
+#login-form input:not(:placeholder-shown)~label {
   top: 17px;
   left: 45px;
   font-size: 12px;
 }
+
 
 #login-form button {
   background-color: #00ae97;
@@ -317,8 +341,10 @@ body {
   margin-bottom: 10px;
   font-size: 16px;
 }
+
 #login-form .google-button:hover {
-  background-color: #ea5a5a; /* Lighter shade example */
+  background-color: #ea5a5a;
+  /* Lighter shade example */
 }
 
 
@@ -326,7 +352,7 @@ body {
   background-color: #38ebd3;
 }
 
-#login-form #toggle-signin{
+#login-form #toggle-signin {
   background-color: rgba(68, 68, 68, 0.6);
   font-size: 18px;
   border: 1px solid #353333;
@@ -339,7 +365,7 @@ body {
 #login-form p {
   color: #eae2e2;
   margin-top: 10px;
-  margin-left: 45%;
+  text-align: center;
 }
 
 #login-form #fineprint {
@@ -405,4 +431,11 @@ body {
 
 #login-form a:hover {
   text-decoration: underline;
+}
+
+.space-grotesk {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: 0%;
+  font-optical-sizing: auto;
+  font-style: normal;
 }

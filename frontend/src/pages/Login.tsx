@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
+import GradientBackground from "../components/GradientBackground";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -74,36 +75,15 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div
-      className="login"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        backgroundColor:"#ffda99",
-        backgroundImage: `
-        radial-gradient(at 72% 8%, hsla(205,57%,82%,1) 0px, transparent 50%),
-        radial-gradient(at 50% 71%, hsla(352,48%,52%,1) 0px, transparent 50%),
-        radial-gradient(at 35% 14%, hsla(214,73%,38%,1) 0px, transparent 50%),
-        radial-gradient(at 87% 68%, hsla(214,73%,38%,1) 0px, transparent 50%),
-        radial-gradient(at 100% 23%, hsla(210,50%,66%,1) 0px, transparent 50%),
-        radial-gradient(at 0% 88%, hsla(358,57%,82%,1) 0px, transparent 50%),
-        radial-gradient(at 73% 22%, hsla(210,0%,100%,1) 0px, transparent 50%),
-        radial-gradient(at 3% 3%, hsla(214,73%,38%,1) 0px, transparent 50%),
-        radial-gradient(at 28% 30%, hsla(210,50%,66%,1) 0px, transparent 50%),
-        radial-gradient(at 100% 83%, hsla(214,73%,38%,1) 0px, transparent 50%)`,
-        
+    <div className="overflow-hidden">
+      <GradientBackground />
+    <div className="login">
 
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
       <section id="login-form">
-        <form onSubmit={handleSubmit} autoComplete="off">
-          <h1>Capsule</h1>
+      <h1 className="space-grotesk" style={{ zIndex: 100 }}>Capsule</h1>
+      <p className="space-grotesk" style={{ zIndex: 100 }}>Capture. Collect. Relive.</p>
+
+      <form onSubmit={handleSubmit} autoComplete="off">g
           <div className="input-group">
             <input
               type="text"
@@ -114,8 +94,8 @@ const Login: React.FC = () => {
               autoComplete="off"
               onChange={handleEmailChange}
             />
-            <label htmlFor="email" className="placeholder">
-              Enter your email
+            <label htmlFor="email" className="placeholder" style={{ color: "hsla(0, 0%, 100%, 0.7)", marginLeft: "20px", marginTop: "5px"}}>
+              Email or Phone Number
             </label>
           </div>
           <div className="input-group">
@@ -128,8 +108,8 @@ const Login: React.FC = () => {
               autoComplete="new-password"
               onChange={handlePasswordChange}
             />
-            <label htmlFor="password" className="placeholder">
-              Enter password
+            <label htmlFor="password" className="placeholder" style={{ color: "hsla(0, 0%, 100%, 0.7)", marginLeft: "20px", marginTop: "5px"}}>
+              Password
             </label>
           </div>
           {errorMessage && (
@@ -160,6 +140,8 @@ const Login: React.FC = () => {
         </form>
       </section>
      </div>
+    </div>
+
   );
 };
 
