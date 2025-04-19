@@ -1,7 +1,4 @@
 @import "tailwindcss";
-
-@import url("https://fonts.google.com/share?selection.family=Space+Grotesk:wght@300..700");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -406,4 +403,11 @@ body {
 
 #login-form a:hover {
   text-decoration: underline;
+}
+
+.glass-background {
+  background-color: #f1f9ff2a;
+  box-shadow: inset 2px 1px 8px #ffffff50, 2px 4px 10px #00000030;
+   -webkit-backdrop-filter: blur(10px) brightness(100%);
+  backdrop-filter: blur(10px) brightness(100%);
 }
