@@ -1,4 +1,5 @@
-@import url("https://fonts.google.com/share?selection.family=Space+Grotesk:wght@300..700");
+/* @import url("https://fonts.google.com/share?selection.family=Space+Grotesk:wght@300..700"); */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 
@@ -7,7 +8,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: "Poppins", system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -202,7 +203,11 @@ html, body {
 
 /* Add Poppins font to Tailwind */
 .font-poppins {
-  font-family: "Poppins", sans-serif;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 500;
+  font-size: 36px;
+  letter-spacing: 0%;
+  line-height: 100%;
 }
 
 
@@ -407,6 +412,11 @@ html, body {
 
 }
 
+
+#login-form #fineprint-agree input[type="checkbox"] {
+  vertical-align: middle; /* Align checkbox with text */
+}
+
 #login-form #signup-redirect {
   margin-top: 10px;
   /* margin-left: 40px; */
@@ -491,6 +501,20 @@ html, body {
     position: relative;
     right: 0px;
   }
+
+  #login-form #fineprint-agree {
+    font-size: 12px; /* Reduce font size */
+    line-height: 1.4; /* Adjust line height for better spacing */
+    color: #eae2e2;
+    text-align: center; /* Center the text */
+    position: absolute; /* Position it relative to #login-form */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: 80%; /* Restrict width to force wrapping */
+    left: 175px;
+  }
 }
 
 @media (min-width: 1000px) {
@@ -505,5 +529,19 @@ html, body {
   .svg-eye {
     right: 10px;
     position: relative;
+  }
+
+  #login-form #fineprint-agree {
+    font-size: 12px; /* Reduce font size */
+    line-height: 1.4; /* Adjust line height for better spacing */
+    color: #eae2e2;
+    text-align: center; /* Center the text */
+    position: absolute; /* Position it relative to #login-form */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    width: 80%; /* Restrict width to force wrapping */
+    /* left: 175px; */
   }
 }
