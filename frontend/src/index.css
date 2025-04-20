@@ -466,3 +466,24 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+@media (max-width: 1000px) {
+  .forgot-pwd {
+    z-index: 100;
+    position: relative;
+    right: -75px;
+    top: -10px;
+    font-size: small;
+    color: #E6D3DC;
+  }
+}
+
+@media (min-width: 1000px) {
+  .forgot-pwd {
+    position: static; /* Default alignment for larger screens */
+    right: -90px;
+    top: -10px;
+    font-size: small;
+    color: #E6D3DC;
+  }
+}
