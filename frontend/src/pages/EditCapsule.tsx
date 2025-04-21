@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router';
 
 export default function EditCapsule() {
   const [name, setName] = useState("");
-  const [openingDate, setOpeningDate] = useState("");
+  const [openingDate, setOpeningDate] = useState(localStorage.getItem("capsuleDate") || "");
   const [error, setError] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
   const backendUrl: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
@@ -74,7 +74,7 @@ export default function EditCapsule() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
+            placeholder={localStorage.getItem("capsuleName") || "Name"}
             className="flex-1 bg-transparent outline-none text-white placeholder-white/70 text-lg"
           />
         </div>
