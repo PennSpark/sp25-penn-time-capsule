@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,6 +15,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Gradient variables */
+
   --color-bg1: rgb(26, 88, 167);
   --color-bg2: rgb(255, 255, 255);
   --color1: 18, 113, 255;
@@ -30,6 +30,20 @@
 }
 
 html, body {
+  --color-bg1: #114d92;
+  --color-bg2: rgb(181, 164, 233);
+  --color1: 204, 83, 81;
+  --color2: 49, 152, 255;
+  --color3: 235, 120, 143;
+  --color4: 86, 25, 156;
+  --color5: 74, 81, 213;
+  --color-interactive: 98, 102, 227;
+  --circle-size: 85%;
+  --blending:screen;
+
+}
+
+body {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -544,4 +558,10 @@ html, body {
     width: 80%; /* Restrict width to force wrapping */
     /* left: 175px; */
   }
+  
+.glass-background {
+  background-color: #f1f9ff2a;
+  box-shadow: inset 2px 1px 8px #ffffff50, 2px 4px 10px #00000030;
+   -webkit-backdrop-filter: blur(10px) brightness(100%);
+  backdrop-filter: blur(10px) brightness(100%);
 }
