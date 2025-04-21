@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import CreateCapsule from "./pages/CreateCapsule";
+import UploadMemory from "./pages/UploadMemory";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="register" element={<Register />} />
           </Route>
           <Route path="/create" element={<CreateCapsule />} />
+          <Route path="/upload" element={<UploadMemory />} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
