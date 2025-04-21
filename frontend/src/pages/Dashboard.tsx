@@ -5,6 +5,7 @@ import GachaponMachineIdle from "../components/GachaponMachineIdle";
 import GachaponMachineOpen from "../components/GachaponMachineOpen";
 import GachaponBallsFalling from "../components/GachaponBallsFalling";
 import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
+import { useNavigate } from "react-router";
 
 type TimeCapsule = {
   _id: string;
@@ -25,21 +26,21 @@ const machines = [
 
 function Dashboard() {
   const [viewMode, setViewMode] = useState<"swipe" | "grid">("swipe");
-  const [capsules, setCapsules] = useState<TimeCapsule[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
 
-  // fetch all capsules on mount
-  useEffect(() => {
-    fetch("/api/timecapsules")
-      .then((res) => res.json())
-      .then((data) => {
-        setCapsules(data.capsules);
-        setCurrentIndex(0);
-      })
-      .catch(console.error);
-  }, []);
+  // handle navigation
+  const navigate = useNavigate();
+  const handleCreateCapsule = () => {
+    navigate("/create");
+  };
+  const handleUploadMemory = () => {
+    navigate("/upload");
+  };
+  const handleOpenCapsule = () => {
+    navigate("/open");
+  };
 
   // Toggle menu with the plus button
   const toggleMenu = () => {
@@ -187,7 +188,10 @@ function Dashboard() {
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
                     Upload Memory
                   </button>
-                  <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
+                  <button
+                    className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                    onClick={handleCreateCapsule}
+                  >
                     New Capsule
                   </button>
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
