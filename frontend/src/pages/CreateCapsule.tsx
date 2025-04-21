@@ -1,84 +1,145 @@
-import { useRef, useState } from "react";
-import { Calendar, Pencil } from "lucide-react";
-import GradientBackground from "../components/GradientBackground";
-import BackButton from "../components/BackButton";
+const express = require("express");
+const TimeCapsule = require("../models/TimeCapsule");
+const User = require("../models/User");
+const authenticateToken = require("../middleware/authenticateToken"); // Middleware for JWT authentication
+require("dotenv").config();
 
-export default function CreateCapsule() {
-  const [name, setName] = useState("");
-  const [openingDate, setOpeningDate] = useState("");
-  const dateInputRef = useRef<HTMLInputElement>(null);
+const router = express.Router();
 
-  const onDateRowClick = () => {
-    const input = dateInputRef.current!;
-    if (typeof input.showPicker === "function") input.showPicker();
-    else input.focus();
-  };
+// Create New Time Capsule - TESTED AND WORKING
+router.post("/create", authenticateToken, async (req, res) => {
+  const { name, date } = req.body;
+  const userId = req.user.id; // Get user from signed JWT token (authenicateToken middleware)
+  console.log(name, date, userId);
+  try {
+    const newCapsule = new TimeCapsule({
+      name,
+      owner: userId, // Set the user who created it as the owner
+      members: [userId],
+      date: date // The user who created it will be added as a member
+    });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // submit logic…
-  };
+    await newCapsule.save();
 
-  return (
-    <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center py-20">
-      <GradientBackground />
+    // update user's timecapsules array
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { timeCapsules: newCapsule._id },
+      },
+      { new: true }
+    );
 
-      {/* Back button */}
-      <BackButton />
+    res.status(201).json({
+      message: "Time capsule created successfully",
+      capsule: newCapsule,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error creating time capsule", error: err.message });
+  }
+});
 
-      <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 mx-5">
-        Create Capsule
-      </h1>
-      <h4 className="text-xl sm:text-2xl text-white/60 mb-5 mx-5">
-        Choose a name for your capsule and an opening date!
-      </h4>
+// Join Time Capsule - TESTED AND WORKING
+router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
+  const { capsuleId } = req.params;
+  const userId = req.user.id; // Get the user from JWT token
 
-      <img
-        alt="machine render"
-        src="machine_render.png"
-        className="h-[40%] md:h-[50%] mb-5"
-      />
+  try {
+    const capsule = await TimeCapsule.findById(capsuleId);
+    if (!capsule)
+      return res.status(404).json({ message: "Time capsule not found" });
 
-      <form
-        onSubmit={handleSubmit}
-        className="z-10 flex flex-col items-center space-y-4 px-4 w-full max-w-sm"
-        autoComplete="off"
-      >
-        {/* Name field */}
-        <div className="flex items-center w-full glass-background rounded-xl px-4 py-3">
-          <Pencil className="h-5 w-5 text-white/70 mr-3" />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-            className="flex-1 bg-transparent outline-none text-white placeholder-white/70 text-lg"
-          />
-        </div>
+    // Check if the user is already a member
+    if (capsule.members.includes(userId)) {
+      return res
+        .status(400)
+        .json({ message: "Already a member of this time capsule" });
+    }
 
-        {/* Opening Date field */}
-        <div
-          onClick={onDateRowClick}
-          className="flex items-center w-full glass-background rounded-xl px-4 py-3 cursor-pointer"
-        >
-          <Calendar className="h-5 w-5 text-white/70 mr-3" />
-          <input
-            ref={dateInputRef}
-            type="date"
-            value={openingDate}
-            onChange={(e) => setOpeningDate(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-white placeholder-white/70 text-lg"
-          />
-        </div>
+    // add the user to the capsule's members
+    capsule.members.push(userId);
+    await capsule.save();
 
-        {/* Save button */}
-        <button
-          type="submit"
-          className="w-full glass-background rounded-xl mt-5 py-4 text-lg font-medium text-white hover:brightness-125 cursor-pointer transition-all duration-300"
-        >
-          Save
-        </button>
-      </form>
-    </div>
-  );
-}
+    // update user's timecapsules array
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: { timeCapsules: capsule._id },
+      },
+      { new: true }
+    );
+
+    res.json({ message: "Joined time capsule successfully", capsule });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error joining time capsule", error: err.message });
+  }
+});
+
+// Leave Time Capsule - TESTED AND WORKING
+router.delete("/leave/:capsuleId", authenticateToken, async (req, res) => {
+  const { capsuleId } = req.params;
+  const userId = req.user.id; // The user who is leaving the capsule
+
+  try {
+    const capsule = await TimeCapsule.findById(capsuleId);
+    if (!capsule)
+      return res.status(404).json({ message: "Time Capsule not found" });
+
+    // If user is the owner, delete the time capsule and all members
+    if (capsule.owner.toString() === userId) {
+      // Delete the time capsule (owner is leaving, remove all members)
+      await capsule.deleteOne();
+
+      // remove time capsule from all users who are members of the capsule
+      await User.updateMany(
+        { timeCapsules: capsuleId },
+        { $pull: { timeCapsules: capsuleId } },
+        { new: true }
+      );
+
+      return res.json({
+        message: "Time Capsule deleted because the owner left.",
+      });
+    }
+
+    // If the user is not the owner, just remove them from the members list
+    capsule.members = capsule.members.filter(
+      (member) => member.toString() !== userId
+    );
+    await capsule.save();
+
+    // update user's timecapsules array
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: { timeCapsules: capsuleId },
+      },
+      { new: true }
+    );
+
+    res.json({ message: "User left the time capsule." });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+// Get User's Time Capsules
+router.get("/get", authenticateToken, async (req, res) => {
+  try {
+    // get the user ID from the authenticated token (middleware)
+    const userId = req.user.id;
+
+    // find all time capsules where the user is a member
+    const capsules = await TimeCapsule.find({ members: userId });
+    res.json(capsules);
+  } catch (error) {
+    console.error("Error retrieving time capsules:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+});
+
+module.exports = router;
