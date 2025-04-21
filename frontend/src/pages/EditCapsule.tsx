@@ -2,11 +2,16 @@ import { useRef, useState } from "react";
 import { Calendar, Pencil } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
 import BackButton from "../components/BackButton";
+import axios from "axios";
+import {useNavigate} from 'react-router';
 
 export default function EditCapsule() {
   const [name, setName] = useState("");
   const [openingDate, setOpeningDate] = useState("");
+  const [error, setError] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
+  const backendUrl: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const navigate = useNavigate();
 
   const onDateRowClick = () => {
     const input = dateInputRef.current!;
@@ -14,8 +19,26 @@ export default function EditCapsule() {
     else input.focus();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const capsuleId = localStorage.getItem("capsuleId");
+    if (!capsuleId || (!name && !openingDate)) {
+      setError("Please enter a Capsule Name or Opening Date");
+    }
+    try {
+      const token = localStorage.getItem("token");
+        const response = await axios.post(`${backendUrl}/api/timecapsule/edit`,
+          {capsuleId: capsuleId, name: name, date: openingDate},
+          {
+            headers: {Authorization: `Bearer ${token}`}
+          }
+        );
+        setError("");
+        navigate("/");
+    } catch(err) {
+      console.error(err);
+    }
+
     // submit logic…
   };
 
@@ -70,6 +93,12 @@ export default function EditCapsule() {
             className="flex-1 bg-transparent outline-none text-white placeholder-white/70 text-lg"
           />
         </div>
+
+        {error && (
+          <div className="text-red-500 text-sm">
+            {error}
+          </div>
+        )}
 
         {/* Save button */}
         <button
