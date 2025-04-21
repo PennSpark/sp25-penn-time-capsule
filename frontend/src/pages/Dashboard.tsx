@@ -28,6 +28,7 @@ function Dashboard() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
   const backend_url: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const token = localStorage.getItem("token");
 
   // handle navigation
   const navigate = useNavigate();
