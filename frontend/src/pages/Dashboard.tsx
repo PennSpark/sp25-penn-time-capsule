@@ -20,7 +20,7 @@ function Dashboard() {
     {
       _id: "defaultid",
       name: "No Memories Found!",
-      date: new Date().toISOString().split("T")[0],
+      date: "date",
       files: [],
     },
   ]);
@@ -98,11 +98,10 @@ function Dashboard() {
   }, [menuOpen]);
 
   // display capsule opening button
-  const isCapsuleOpenable = () => {
-    const dateStr = capsules[currentIndex]?.date;
-    const capsuleDateObj = new Date(dateStr);
+  const isCapsuleOpenable = (date: string) => {
+    const capsuleDateObj = new Date(date);
     // if dateStr is missing or invalid, bail out
-    if (!dateStr || isNaN(capsuleDateObj.getTime())) return false;
+    if (!date || isNaN(capsuleDateObj.getTime())) return false;
 
     const today = new Date().toISOString().split("T")[0];
     const capsuleDate = capsuleDateObj.toISOString().split("T")[0];
@@ -173,7 +172,7 @@ function Dashboard() {
           />
 
           {/* Pagination Dots */}
-          {!isCapsuleOpenable() && (
+          {!isCapsuleOpenable(capsules[currentIndex].date) && (
             <div className="absolute bottom-24 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
               {capsules.map((_, index) => (
                 <div
@@ -190,7 +189,7 @@ function Dashboard() {
           )}
 
           {/* Capsule Opening Button */}
-          {isCapsuleOpenable() && (
+          {isCapsuleOpenable(capsules[currentIndex].date) && (
             <button
               onClick={handleOpenCapsule}
               className="absolute saturate-100 w-[80%] max-w-sm text-2xl bottom-14 left-1/2 transform -translate-x-1/2 z-20 glass-golden pulse cursor-pointer hover:brightness-110 text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300"
@@ -200,14 +199,16 @@ function Dashboard() {
           )}
 
           {/* Plus Button */}
-          <button
-            title="Add"
-            ref={plusButtonRef}
-            className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition-all duration-300"
-            onClick={toggleMenu}
-          >
-            <Plus className="h-8 w-8 text-white" />
-          </button>
+          {!isCapsuleOpenable(capsules[currentIndex].date) && (
+            <button
+              title="Add"
+              ref={plusButtonRef}
+              className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition-all duration-300"
+              onClick={toggleMenu}
+            >
+              <Plus className="h-8 w-8 text-white" />
+            </button>
+          )}
 
           {/* Translucent Menu */}
           {menuOpen && (
@@ -252,12 +253,16 @@ function Dashboard() {
         </div>
       ) : (
         /* Grid View */
-        <div className="absolute top-36 left-0 right-0 bottom-0 overflow-y-auto px-4 pb-4 z-10 max-w-4xl align-self-center mx-auto">
-          <div className="grid grid-cols-2 gap-4 md:gap-8 md:mx-30">
+        <div className="absolute top-32 left-0 right-0 bottom-0 overflow-y-auto px-4 pb-4 z-10 max-w-4xl align-self-center mx-auto">
+          <div className="grid grid-cols-2 py-10 gap-4 md:gap-8 md:mx-30 text-center">
             {capsules.map((machine) => (
               <div
                 key={machine._id}
-                className="glass-background rounded-xl py-8 flex flex-col items-center border-2 border-white/30 hover:border-white/60 transition duration-300 cursor-pointer"
+                className={`${
+                  isCapsuleOpenable(machine.date)
+                    ? "glass-golden pulse"
+                    : "glass-background"
+                } rounded-xl py-8 flex flex-col items-center border-2 border-white/30 hover:border-white/60 transition duration-300 cursor-pointer`}
               >
                 <h3 className="text-xl font-medium text-white mb-2">
                   {machine.name}
