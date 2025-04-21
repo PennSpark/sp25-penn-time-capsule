@@ -27,7 +27,7 @@ function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
-  const backend_url: string = "http://localhost:8080";
+  const backend_url: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
   // handle navigation
   const navigate = useNavigate();
@@ -42,19 +42,21 @@ function Dashboard() {
   };
 
   // fetch all capsules on mount
-  useEffect(() => {
-    fetch(`${backend_url}/api/timecapsules`)
+useEffect(() => {
+    fetch(`${backend_url}/api/timecapsule/get`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
-        const capsuleInfo = data.capsules;
-        if (capsuleInfo.length > 0) {
-          setCapsules(capsuleInfo);
+        if (data.length > 0) {
+          setCapsules(data);
         }
         setCurrentIndex(0);
       })
       .catch((err) => console.error(err));
   }, []);
-
   // Toggle menu with the plus button
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
