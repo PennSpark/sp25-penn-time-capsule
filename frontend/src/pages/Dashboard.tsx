@@ -40,7 +40,7 @@ function Dashboard() {
   };
 
   const handleEditCapsule = () => {
-    const capsuleId = capsules[currentIndex]._id
+    const capsuleId = capsules[currentIndex]._id;
     localStorage.setItem("capsuleId", capsuleId);
     navigate("/edit");
   };
@@ -191,13 +191,20 @@ function Dashboard() {
               <div className="flex items-center justify-center text-white/80 mb-12">
                 <Calendar className="h-4 w-4 mr-2" />
                 <span className="text-lg md:text-2xl">
-                  {capsules[currentIndex].date}
+                  {new Date(capsules[currentIndex].date).toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    }
+                  )}{" "}
                 </span>
               </div>
             </div>
 
             {/* 3D Canvas */}
-            <div className="absolute inset-0 flex items-center justify-center mt-20">
+            <div className="absolute inset-0 flex items-center justify-center mt-16 md:mt-20">
               <GachaponMachineIdle />
             </div>
 
@@ -263,28 +270,28 @@ function Dashboard() {
                 <div className="glass-background rounded-lg w-fit overflow-hidden">
                   <div className="flex flex-col">
                     <button
-                      className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                      className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10"
                       onClick={handleUploadMemory}
                     >
                       Upload Memory
                     </button>
                     <button
-                      className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                      className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10"
                       onClick={handleCreateCapsule}
                     >
                       New Capsule
                     </button>
                     <button
-                      className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                      className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10"
                       onClick={handleEditCapsule}
                     >
                       Edit Capsule
                     </button>
-                    <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
+                    <button className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10">
                       Customize
                     </button>
                     <button
-                      className="py-3 px-6 text-white text-lg text-left hover:bg-white/10"
+                      className="py-3 px-6 text-white text-lg text-left cursor-pointer hover:bg-white/10"
                       onClick={handleOpenJoinModal}
                     >
                       Join Existing
@@ -296,11 +303,15 @@ function Dashboard() {
           </div>
         ) : (
           /* Grid View */
-          <div className="absolute top-32 left-0 right-0 bottom-0 overflow-y-auto px-4 pb-4 z-10 max-w-4xl align-self-center mx-auto">
-            <div className="grid grid-cols-2 py-10 gap-4 md:gap-8 md:mx-30 text-center">
-              {capsules.map((machine) => (
+          <div className="absolute top-32 left-0 right-0 bottom-0 overflow-y-auto px-4 pb-4 z-10 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 py-10 gap-4 md:gap-8 text-center">
+              {capsules.map((machine, index) => (
                 <div
                   key={machine._id}
+                  onClick={() => {
+                    setCurrentIndex(index);
+                    setViewMode("swipe");
+                  }}
                   className={`${
                     isCapsuleOpenable(machine.date)
                       ? "glass-golden pulse"
