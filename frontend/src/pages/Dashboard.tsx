@@ -2,6 +2,16 @@ import { useState, useRef, useEffect } from "react";
 import { Calendar, Grid, ImageIcon, Plus } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
 import GachaponMachineIdle from "../components/GachaponMachineIdle";
+import GachaponMachineOpen from "../components/GachaponMachineOpen";
+import GachaponBallsFalling from "../components/GachaponBallsFalling";
+import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
+
+type TimeCapsule = {
+  _id: string;
+  name: string;
+  date: string;
+  files: { url: string; fileType: string }[];
+};
 
 // Sample data for machines
 const machines = [
@@ -15,9 +25,21 @@ const machines = [
 
 function Dashboard() {
   const [viewMode, setViewMode] = useState<"swipe" | "grid">("swipe");
+  const [capsules, setCapsules] = useState<TimeCapsule[]>([]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
+
+  // fetch all capsules on mount
+  useEffect(() => {
+    fetch("/api/timecapsules")
+      .then((res) => res.json())
+      .then((data) => {
+        setCapsules(data.capsules);
+        setCurrentIndex(0);
+      })
+      .catch(console.error);
+  }, []);
 
   // Toggle menu with the plus button
   const toggleMenu = () => {
@@ -163,7 +185,10 @@ function Dashboard() {
               <div className="bg-white/20 backdrop-blur-md rounded-lg w-48 overflow-hidden">
                 <div className="flex flex-col">
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
-                    Memory
+                    Upload Memory
+                  </button>
+                  <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
+                    New Capsule
                   </button>
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
                     Rename
@@ -193,7 +218,7 @@ function Dashboard() {
                 </h3>
                 <img
                   alt="machine"
-                  src="machine-render.png"
+                  src="machine_render.png"
                   className="max-h-80"
                 />
               </div>
