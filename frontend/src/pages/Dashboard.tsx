@@ -20,7 +20,7 @@ function Dashboard() {
     {
       _id: "defaultid",
       name: "No Memories Found!",
-      date: "date",
+      date: new Date().toISOString(),
       files: [],
     },
   ]);
@@ -192,9 +192,9 @@ function Dashboard() {
           {isCapsuleOpenable(capsules[currentIndex].date) && (
             <button
               onClick={handleOpenCapsule}
-              className="absolute saturate-100 w-[80%] max-w-sm text-2xl bottom-14 left-1/2 transform -translate-x-1/2 z-20 glass-golden pulse cursor-pointer hover:brightness-110 text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300"
+              className="absolute uppercase saturate-100 w-[80%] max-w-sm text-2xl bottom-14 left-1/2 transform -translate-x-1/2 z-20 glass-golden pulse cursor-pointer hover:brightness-110 text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300"
             >
-              Open Capsule
+              Open Capsule!
             </button>
           )}
 
@@ -220,7 +220,7 @@ function Dashboard() {
                 right: "32px",
               }}
             >
-              <div className="bg-white/20 backdrop-blur-md rounded-lg w-48 overflow-hidden">
+              <div className="glass-background rounded-lg w-48 overflow-hidden">
                 <div className="flex flex-col">
                   <button
                     className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
