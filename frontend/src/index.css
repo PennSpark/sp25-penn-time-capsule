@@ -558,6 +558,7 @@ body {
     width: 80%; /* Restrict width to force wrapping */
     /* left: 175px; */
   }
+}
   
 .glass-background {
   background-color: #f1f9ff2a;
