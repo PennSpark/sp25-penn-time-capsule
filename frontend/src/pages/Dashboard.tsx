@@ -52,6 +52,11 @@ function Dashboard() {
     navigate("/open");
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   // fetch all capsules on mount
   useEffect(() => {
     fetch(`${backend_url}/api/timecapsule/get`, {
@@ -291,10 +296,16 @@ function Dashboard() {
                       Customize
                     </button>
                     <button
-                      className="py-3 px-6 text-white text-lg text-left cursor-pointer hover:bg-white/10"
+                      className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10"
                       onClick={handleOpenJoinModal}
                     >
                       Join Existing
+                    </button>
+                    <button
+                      className="py-3 px-6 text-red-300 text-lg text-left cursor-pointer hover:bg-white/10"
+                      onClick={handleLogOut}
+                    >
+                      Log Out
                     </button>
                   </div>
                 </div>
