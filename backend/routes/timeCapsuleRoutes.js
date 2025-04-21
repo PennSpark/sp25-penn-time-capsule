@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/create", authenticateToken, async (req, res) => {
   const { name, date } = req.body;
   const userId = req.user.id; // Get user from signed JWT token (authenicateToken middleware)
-  console.log(name, date, userId);
+
   try {
     const newCapsule = new TimeCapsule({
       name,
@@ -40,6 +40,44 @@ router.post("/create", authenticateToken, async (req, res) => {
       .json({ message: "Error creating time capsule", error: err.message });
   }
 });
+
+router.post('/edit', authenticateToken, async(req, res) => {
+  const {capsuleId, name, date} = req.body;
+  const userId = req.user.id;
+
+
+  try {
+    if (!capsuleId || (!name && !date)) {
+      return res.status(400).json({
+        message: "Capsule ID and at least one field (name or date) to update must be provided."
+      });
+    }
+
+    // Find the time capsule by its ID
+    const capsule = await TimeCapsule.findById(capsuleId);
+    if (!capsule) {
+      return res.status(404).json({ message: "Time capsule not found." });
+    }
+
+    // Ensure that the authenticated user is the owner
+    if (capsule.owner.toString() !== userId) {
+      return res.status(403).json({ message: "You are not authorized to edit this time capsule." });
+    }
+
+    if (name) capsule.name = name;
+    if (date) capsule.date = date;
+
+    await capsule.save();
+    res.status(201).json({
+      message: "Time capsule updated successfully",
+      capsule
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error Editing time capsule", error: err.message})
+  }
+
+})
 
 // Join Time Capsule - TESTED AND WORKING
 router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
