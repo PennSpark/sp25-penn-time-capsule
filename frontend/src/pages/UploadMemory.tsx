@@ -19,6 +19,7 @@ export default function UploadMemory() {
   const handleSubmit = () => {
     // TODO: replace with your upload logic
     console.log("Uploading files:", files);
+    // navigate back to dashboard after uploading done or show success message
   };
 
   return (

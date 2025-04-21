@@ -20,14 +20,15 @@ function Dashboard() {
     {
       _id: "defaultid",
       name: "No Memories Found!",
-      date: "today",
+      date: new Date().toISOString().split("T")[0],
       files: [],
     },
   ]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
-  const backend_url: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const backend_url: string =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
   const token = localStorage.getItem("token");
 
   // handle navigation
@@ -48,11 +49,11 @@ function Dashboard() {
   };
 
   // fetch all capsules on mount
-useEffect(() => {
+  useEffect(() => {
     fetch(`${backend_url}/api/timecapsule/get`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -95,6 +96,18 @@ useEffect(() => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuOpen]);
+
+  // display capsule opening button
+  const isCapsuleOpenable = () => {
+    const dateStr = capsules[currentIndex]?.date;
+    const capsuleDateObj = new Date(dateStr);
+    // if dateStr is missing or invalid, bail out
+    if (!dateStr || isNaN(capsuleDateObj.getTime())) return false;
+
+    const today = new Date().toISOString().split("T")[0];
+    const capsuleDate = capsuleDateObj.toISOString().split("T")[0];
+    return today === capsuleDate;
+  };
 
   return (
     <div className="relative h-screen w-screen overflow-hidden font-poppins">
@@ -160,25 +173,37 @@ useEffect(() => {
           />
 
           {/* Pagination Dots */}
-          <div className="absolute bottom-24 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
-            {capsules.map((_, index) => (
-              <div
-                key={index}
-                className={`rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? "h-6 w-6 bg-white"
-                    : "h-3 w-3 bg-white/40"
-                }`}
-                onClick={() => setCurrentIndex(index)}
-              />
-            ))}
-          </div>
+          {!isCapsuleOpenable() && (
+            <div className="absolute bottom-24 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
+              {capsules.map((_, index) => (
+                <div
+                  key={index}
+                  className={`rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? "h-6 w-6 bg-white"
+                      : "h-3 w-3 bg-white/40"
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Capsule Opening Button */}
+          {isCapsuleOpenable() && (
+            <button
+              onClick={handleOpenCapsule}
+              className="absolute saturate-100 w-[80%] max-w-sm text-2xl bottom-14 left-1/2 transform -translate-x-1/2 z-20 glass-golden pulse cursor-pointer hover:brightness-110 text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300"
+            >
+              Open Capsule
+            </button>
+          )}
 
           {/* Plus Button */}
           <button
             title="Add"
             ref={plusButtonRef}
-            className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition duration-300"
+            className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition-all duration-300"
             onClick={toggleMenu}
           >
             <Plus className="h-8 w-8 text-white" />
