@@ -186,7 +186,10 @@ function Dashboard() {
             >
               <div className="bg-white/20 backdrop-blur-md rounded-lg w-48 overflow-hidden">
                 <div className="flex flex-col">
-                  <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
+                  <button
+                    className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                    onClick={handleUploadMemory}
+                  >
                     Upload Memory
                   </button>
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
