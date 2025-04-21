@@ -566,6 +566,52 @@ body {
   backdrop-filter: blur(10px) brightness(100%);
 }
 
+.glass-golden {
+  background-color: #f0aa06c2;
+  box-shadow:
+    inset 2px 1px 8px rgba(255, 255, 255, 0.4),
+    inset 0 0 10px rgba(255, 191, 0, 0.8),
+    0 0 12px 4px rgba(255, 180, 0, 0.5),
+    2px 4px 14px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px) brightness(130%);
+  backdrop-filter: blur(10px) brightness(130%);
+  border: 1px solid rgba(255, 223, 0, 0.6);
+}
+
+@keyframes goldenPulse {
+  0% {
+    box-shadow:
+      inset 2px 1px 8px rgba(255, 255, 255, 0.3),
+      inset 0 0 12px rgba(255, 215, 0, 0.5),
+      0 0 16px 4px rgba(255, 200, 0, 0.4),
+      0 0 24px 6px rgba(255, 180, 0, 0.3);
+  }
+  50% {
+    box-shadow:
+      inset 2px 1px 10px rgba(255, 255, 255, 0.4),
+      inset 0 0 18px rgba(255, 225, 70, 0.6),
+      0 0 22px 6px rgba(255, 210, 0, 0.5),
+      0 0 30px 8px rgba(255, 190, 0, 0.4);
+  }
+  100% {
+    box-shadow:
+      inset 2px 1px 8px rgba(255, 255, 255, 0.3),
+      inset 0 0 12px rgba(255, 215, 0, 0.5),
+      0 0 16px 4px rgba(255, 200, 0, 0.4),
+      0 0 24px 6px rgba(255, 180, 0, 0.3);
+  }
+}
+
+.glass-golden.pulse {
+  animation: goldenPulse 2.5s ease-in-out infinite;
+}
+
+.glass-golden.pulse:hover {
+  animation: goldenPulse 2.5s ease-in-out infinite;
+}
+
+
+
 /* remove the built‑in calendar icon & extra padding */
 input[type="date"] {
   -webkit-appearance: none;
