@@ -8,14 +8,15 @@ const router = express.Router();
 
 // Create New Time Capsule - TESTED AND WORKING
 router.post("/create", authenticateToken, async (req, res) => {
-  const { name } = req.body;
+  const { name, date } = req.body;
   const userId = req.user.id; // Get user from signed JWT token (authenicateToken middleware)
 
   try {
     const newCapsule = new TimeCapsule({
       name,
       owner: userId, // Set the user who created it as the owner
-      members: [userId], // The user who created it will be added as a member
+      members: [userId],
+      date: date // The user who created it will be added as a member
     });
 
     await newCapsule.save();
