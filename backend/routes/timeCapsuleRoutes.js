@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/create", authenticateToken, async (req, res) => {
   const { name, date } = req.body;
   const userId = req.user.id; // Get user from signed JWT token (authenicateToken middleware)
-
+  console.log(name, date, userId);
   try {
     const newCapsule = new TimeCapsule({
       name,
