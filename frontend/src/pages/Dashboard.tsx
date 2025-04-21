@@ -5,7 +5,6 @@ import GachaponMachineIdle from "../components/GachaponMachineIdle";
 import GachaponMachineOpen from "../components/GachaponMachineOpen";
 import GachaponBallsFalling from "../components/GachaponBallsFalling";
 import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
-import { useNavigate } from "react-router";
 
 type TimeCapsule = {
   _id: string;
@@ -15,32 +14,34 @@ type TimeCapsule = {
 };
 
 // Sample data for machines
-const machines = [
-  { id: 1, name: "Spark", date: "August 15, 2025" },
-  { id: 2, name: "me + friends", date: "September 21, 2023" },
-  { id: 3, name: "Spring 2025", date: "March 20, 2025" },
-  { id: 4, name: "Retreat", date: "July 10, 2025" },
-  { id: 5, name: "Personal", date: "January 5, 2025" },
-  { id: 6, name: "Halloween", date: "October 31, 2025" },
-];
+
 
 function Dashboard() {
   const [viewMode, setViewMode] = useState<"swipe" | "grid">("swipe");
+  const [capsules, setCapsules] = useState<TimeCapsule[]>([{
+      _id: "defaultid",
+      name: "No Memories Found!",
+      date: "today",
+      files: []
+  }]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
+  const backend_url: string = "http://localhost:8080";
 
-  // handle navigation
-  const navigate = useNavigate();
-  const handleCreateCapsule = () => {
-    navigate("/create");
-  };
-  const handleUploadMemory = () => {
-    navigate("/upload");
-  };
-  const handleOpenCapsule = () => {
-    navigate("/open");
-  };
+  // fetch all capsules on mount
+  useEffect(() => {
+    fetch(`${backend_url}/api/timecapsules`)
+      .then((res) => res.json())
+      .then((data) => {
+        const capsuleInfo = data.capsules;
+        if(capsuleInfo.length > 0) {
+          setCapsules(capsuleInfo);
+        }
+        setCurrentIndex(0);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   // Toggle menu with the plus button
   const toggleMenu = () => {
@@ -49,11 +50,11 @@ function Dashboard() {
 
   // Handle swipe navigation
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % machines.length);
+    setCurrentIndex((prev) => (prev + 1) % capsules.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + machines.length) % machines.length);
+    setCurrentIndex((prev) => (prev - 1 + capsules.length) % capsules.length);
   };
 
   // Close menu when clicking outside
@@ -125,17 +126,17 @@ function Dashboard() {
           {/* Swipe View */}
           <div className="absolute top-32 left-0 right-0 text-center z-10 pointer-events-none">
             <h1 className="text-5xl font-bold text-white mb-2">
-              {machines[currentIndex].name}
+              {capsules[currentIndex].name}
             </h1>
             <div className="flex items-center justify-center text-white/80 mb-12">
               <Calendar className="h-4 w-4 mr-2" />
-              <span className="text-sm">{machines[currentIndex].date}</span>
+              <span className="text-sm">{capsules[currentIndex].date}</span>
             </div>
           </div>
 
           {/* 3D Canvas */}
           <div className="absolute inset-0 flex items-center justify-center mt-16">
-            <GachaponMachineOpen />
+            <GachaponMachineIdle />
           </div>
 
           {/* Swipe Navigation */}
@@ -150,7 +151,7 @@ function Dashboard() {
 
           {/* Pagination Dots */}
           <div className="absolute bottom-24 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
-            {machines.map((_, index) => (
+            {capsules.map((_, index) => (
               <div
                 key={index}
                 className={`rounded-full transition-all duration-300 ${
@@ -188,10 +189,7 @@ function Dashboard() {
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
                     Upload Memory
                   </button>
-                  <button
-                    className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
-                    onClick={handleCreateCapsule}
-                  >
+                  <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
                     New Capsule
                   </button>
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
@@ -212,9 +210,9 @@ function Dashboard() {
         /* Grid View */
         <div className="absolute top-36 left-0 right-0 bottom-0 overflow-y-auto px-4 pb-4 z-10 max-w-4xl align-self-center mx-auto">
           <div className="grid grid-cols-2 gap-4 md:gap-8 md:mx-30">
-            {machines.map((machine) => (
+            {capsules.map((machine) => (
               <div
-                key={machine.id}
+                key={machine._id}
                 className="glass-background rounded-xl py-8 flex flex-col items-center border-2 border-white/30 hover:border-white/60 transition duration-300 cursor-pointer"
               >
                 <h3 className="text-xl font-medium text-white mb-2">
