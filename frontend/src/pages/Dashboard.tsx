@@ -5,6 +5,7 @@ import GachaponMachineIdle from "../components/GachaponMachineIdle";
 import GachaponMachineOpen from "../components/GachaponMachineOpen";
 import GachaponBallsFalling from "../components/GachaponBallsFalling";
 import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
+import { useNavigate } from "react-router";
 
 type TimeCapsule = {
   _id: string;
@@ -13,21 +14,32 @@ type TimeCapsule = {
   files: { url: string; fileType: string }[];
 };
 
-// Sample data for machines
-
-
 function Dashboard() {
   const [viewMode, setViewMode] = useState<"swipe" | "grid">("swipe");
-  const [capsules, setCapsules] = useState<TimeCapsule[]>([{
+  const [capsules, setCapsules] = useState<TimeCapsule[]>([
+    {
       _id: "defaultid",
       name: "No Memories Found!",
       date: "today",
-      files: []
-  }]);
+      files: [],
+    },
+  ]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
   const backend_url: string = "http://localhost:8080";
+
+  // handle navigation
+  const navigate = useNavigate();
+  const handleCreateCapsule = () => {
+    navigate("/create");
+  };
+  const handleUploadMemory = () => {
+    navigate("/upload");
+  };
+  const handleOpenCapsule = () => {
+    navigate("/open");
+  };
 
   // fetch all capsules on mount
   useEffect(() => {
@@ -35,7 +47,7 @@ function Dashboard() {
       .then((res) => res.json())
       .then((data) => {
         const capsuleInfo = data.capsules;
-        if(capsuleInfo.length > 0) {
+        if (capsuleInfo.length > 0) {
           setCapsules(capsuleInfo);
         }
         setCurrentIndex(0);
@@ -111,16 +123,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Add Button (only in grid view) */}
-      {viewMode === "grid" && (
-        <button
-          title="add "
-          className="absolute top-12 right-8 z-10 bg-white/30 backdrop-blur-md rounded-full p-3"
-        >
-          <Plus className="h-5 w-5 text-white" />
-        </button>
-      )}
-
       {viewMode === "swipe" ? (
         <div className="relative h-full w-full">
           {/* Swipe View */}
@@ -141,11 +143,11 @@ function Dashboard() {
 
           {/* Swipe Navigation */}
           <div
-            className="absolute left-0 top-0 h-full w-1/4 z-10 cursor-w-resize"
+            className="absolute left-0 top-0 h-full w-1/4 z-10 "
             onClick={handlePrev}
           />
           <div
-            className="absolute right-0 top-0 h-full w-1/4 z-10 cursor-e-resize"
+            className="absolute right-0 top-0 h-full w-1/4 z-10 "
             onClick={handleNext}
           />
 
@@ -168,7 +170,7 @@ function Dashboard() {
           <button
             title="Add"
             ref={plusButtonRef}
-            className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg"
+            className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition duration-300"
             onClick={toggleMenu}
           >
             <Plus className="h-8 w-8 text-white" />
@@ -192,7 +194,10 @@ function Dashboard() {
                   >
                     Upload Memory
                   </button>
-                  <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
+                  <button
+                    className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                    onClick={handleCreateCapsule}
+                  >
                     New Capsule
                   </button>
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">

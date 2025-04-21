@@ -1,11 +1,9 @@
 import { useRef, useState } from "react";
-import { Calendar, Pencil, ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Calendar, Pencil } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
 import BackButton from "../components/BackButton";
 
 export default function CreateCapsule() {
-  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [openingDate, setOpeningDate] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
@@ -76,7 +74,7 @@ export default function CreateCapsule() {
         {/* Save button */}
         <button
           type="submit"
-          className="w-full glass-background rounded-xl mt-5 py-4 text-lg font-medium text-white hover:bg-white/30 transition-all duration-300"
+          className="w-full glass-background rounded-xl mt-5 py-4 text-lg font-medium text-white hover:brightness-125 cursor-pointer transition-all duration-300"
         >
           Save
         </button>
