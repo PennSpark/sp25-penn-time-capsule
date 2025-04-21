@@ -3,9 +3,12 @@ import { useDropzone } from "react-dropzone";
 import { Upload } from "lucide-react";
 import BackButton from "../components/BackButton";
 import GradientBackground from "../components/GradientBackground";
+import { useNavigate } from "react-router";
 
 export default function UploadMemory() {
   const [files, setFiles] = useState<File[]>([]);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const navigate = useNavigate();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -16,11 +19,48 @@ export default function UploadMemory() {
     multiple: true,
   });
 
-  const handleSubmit = () => {
-    // TODO: replace with your upload logic
+  const handleSubmit = async () => {
     console.log("Uploading files:", files);
-    // navigate back to dashboard after uploading done or show success message
+  
+    try {
+      const capsuleId = localStorage.getItem("capsuleId");
+      const token = localStorage.getItem("token");
+  
+      if (!capsuleId || !token) {
+        console.error("Missing capsule ID or token");
+        return;
+      }
+  
+      for (const file of files) {
+        const form = new FormData();
+        form.append("file", file); // must match upload.single("file") in backend
+  
+        const res = await fetch(`${backendUrl}/api/files/upload/${capsuleId}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: form,
+        });
+  
+        const data = await res.json();
+  
+        if (!res.ok) {
+          console.error(`Failed to upload ${file.name}:`, data.message || "Unknown error");
+        } else {
+          console.log(`Uploaded ${file.name}:`, data.fileUrl);
+        }
+      }
+  
+      // Optional: Show success message or navigate
+      console.log("All files uploaded");
+      navigate("/");
+  
+    } catch (err) {
+      console.error("Upload error:", err);
+    }
   };
+  
 
   return (
     <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center py-20">
@@ -47,6 +87,7 @@ export default function UploadMemory() {
             : "Click or drag to upload files"}
         </p>
       </div>
+
 
       {/* Submit Button */}
       <button
