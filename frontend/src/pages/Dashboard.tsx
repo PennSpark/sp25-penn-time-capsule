@@ -38,6 +38,8 @@ function Dashboard() {
   };
 
   const handleEditCapsule = () => {
+    const capsuleId = capsules[currentIndex]._id
+    localStorage.setItem("capsuleId", capsuleId);
     navigate("/edit");
   };
 
