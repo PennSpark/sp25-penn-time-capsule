@@ -135,7 +135,7 @@ function Dashboard() {
 
           {/* 3D Canvas */}
           <div className="absolute inset-0 flex items-center justify-center mt-16">
-            <GachaponMachineIdle />
+            <GachaponMachineOpen />
           </div>
 
           {/* Swipe Navigation */}

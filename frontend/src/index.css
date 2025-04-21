@@ -304,7 +304,6 @@ body {
   padding-left: 26px;
   gap: 10px;
   box-shadow: 0px 4px 15px 0px hsla(0, 0%, 0%, 0.05);
-
 }
 
 #login-form input:focus {
@@ -565,4 +564,15 @@ body {
   box-shadow: inset 2px 1px 8px #ffffff50, 2px 4px 10px #00000030;
    -webkit-backdrop-filter: blur(10px) brightness(100%);
   backdrop-filter: blur(10px) brightness(100%);
+}
+
+/* remove the built‑in calendar icon & extra padding */
+input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
 }
