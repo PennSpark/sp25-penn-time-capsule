@@ -34,6 +34,11 @@ function Dashboard() {
   const handleCreateCapsule = () => {
     navigate("/create");
   };
+
+  const handleEditCapsule = () => {
+    navigate("/edit");
+  };
+
   const handleUploadMemory = () => {
     navigate("/upload");
   };
@@ -200,8 +205,11 @@ function Dashboard() {
                   >
                     New Capsule
                   </button>
-                  <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
-                    Rename
+                  <button
+                    className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10"
+                    onClick={handleEditCapsule}
+                  >
+                    Edit Capsule
                   </button>
                   <button className="py-3 px-6 text-white text-lg text-left border-b border-white/10 hover:bg-white/10">
                     Customize
