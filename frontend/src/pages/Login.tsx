@@ -12,7 +12,7 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
   const backEndUrl: string =
-    import.meta.env.backend_url || "http://localhost:8080";
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: any): Promise<void> => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${backEndUrl}/login`, {
+      const response = await axios.post(`${backEndUrl}/api/auth/login`, {
         email,
         password,
       });
@@ -55,7 +55,7 @@ const Login: React.FC = () => {
     onSuccess: async (tokenResponse) => {
       // Send the tokenResponse.access_token to your backend for verification / further login steps
       try {
-        const res = await axios.post(`${backEndUrl}/auth/google/login`, {
+        const res = await axios.post(`${backEndUrl}/api/auth/google/login`, {
           access_token: tokenResponse.access_token,
         });
         // Expected response: { token, userId, email, ... }

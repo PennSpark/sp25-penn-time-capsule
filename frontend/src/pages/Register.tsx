@@ -17,7 +17,7 @@ const Register: React.FC = () => {
 
 
     const navigate = useNavigate();
-    const backEndUrl: string = import.meta.env.backend_url || "http://localhost:8080";
+    const backEndUrl: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -67,7 +67,7 @@ const Register: React.FC = () => {
         }
 
         try {
-            const response = axios.post(`${backEndUrl}/register`, {
+            const response = axios.post(`${backEndUrl}/api/auth/register`, {
                 username,
                 email,
                 password,
@@ -84,7 +84,7 @@ const Register: React.FC = () => {
         onSuccess: async (tokenResponse) => {
             try {
                 // Send the access token to your backend endpoint
-                const res = await axios.post(`${backEndUrl}/auth/google/register`, {
+                const res = await axios.post(`${backEndUrl}/api/auth/google/register`, {
                     access_token: tokenResponse.access_token,
                 });
                 // Optionally, you might want to log the user in immediately,
