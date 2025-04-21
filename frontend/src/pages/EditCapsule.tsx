@@ -3,14 +3,17 @@ import { Calendar, Pencil } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
 import BackButton from "../components/BackButton";
 import axios from "axios";
-import {useNavigate} from 'react-router';
+import { useNavigate } from "react-router";
 
 export default function EditCapsule() {
   const [name, setName] = useState("");
-  const [openingDate, setOpeningDate] = useState(localStorage.getItem("capsuleDate") || "");
+  const [openingDate, setOpeningDate] = useState(
+    localStorage.getItem("capsuleDate") || ""
+  );
   const [error, setError] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
-  const backendUrl: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const backendUrl: string =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
   const navigate = useNavigate();
 
   const onDateRowClick = () => {
@@ -27,19 +30,18 @@ export default function EditCapsule() {
     }
     try {
       const token = localStorage.getItem("token");
-        const response = await axios.post(`${backendUrl}/api/timecapsule/edit`,
-          {capsuleId: capsuleId, name: name, date: openingDate},
-          {
-            headers: {Authorization: `Bearer ${token}`}
-          }
-        );
-        setError("");
-        navigate("/");
-    } catch(err) {
+      const response = await axios.post(
+        `${backendUrl}/api/timecapsule/edit`,
+        { capsuleId: capsuleId, name: name, date: openingDate },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setError("");
+      navigate("/");
+    } catch (err) {
       console.error(err);
     }
-
-    // submit logic…
   };
 
   return (
@@ -94,11 +96,7 @@ export default function EditCapsule() {
           />
         </div>
 
-        {error && (
-          <div className="text-red-500 text-sm">
-            {error}
-          </div>
-        )}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         {/* Save button */}
         <button

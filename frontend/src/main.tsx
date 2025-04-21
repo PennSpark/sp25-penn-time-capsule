@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import CreateCapsule from "./pages/CreateCapsule";
 import UploadMemory from "./pages/UploadMemory";
 import EditCapsule from "./pages/EditCapsule";
+import OpenCapsule from "./pages/OpenCapsule";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/create" element={<CreateCapsule />} />
           <Route path="/edit" element={<EditCapsule />} />
           <Route path="/upload" element={<UploadMemory />} />
+          <Route path="/open" element={<OpenCapsule />} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>
