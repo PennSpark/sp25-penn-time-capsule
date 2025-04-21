@@ -4,6 +4,7 @@ const TimeCapsuleSchema = new mongoose.Schema({
   name: { type: String, required: true },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  date: {type: String, required: true},
   files: [
     {
       url: { type: String, required: true },
