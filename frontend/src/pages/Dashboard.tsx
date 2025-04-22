@@ -53,6 +53,8 @@ function Dashboard() {
     navigate("/upload");
   };
   const handleOpenCapsule = () => {
+    const capsuleId = capsules[currentIndex]._id
+    localStorage.setItem("capsuleId", capsuleId);
     navigate("/open");
   };
 
