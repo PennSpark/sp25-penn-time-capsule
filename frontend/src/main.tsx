@@ -11,13 +11,15 @@ import CreateCapsule from "./pages/CreateCapsule";
 import UploadMemory from "./pages/UploadMemory";
 import EditCapsule from "./pages/EditCapsule";
 import OpenCapsule from "./pages/OpenCapsule";
+import Onboarding from "./pages/Onboarding"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Onboarding />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
