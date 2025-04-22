@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/");
+      navigate("/dashboard");
     }
   }, [navigate]);
 
@@ -41,7 +41,7 @@ const Login: React.FC = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("email", email);
-        navigate("/");
+        navigate("/dashboard");
       } else {
         setErrorMessage(true);
       }
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("email", email);
-        navigate("/");
+        navigate("/dashboard");
       } catch (error) {
         console.error("Google login error:", error);
         setErrorMessage(true);

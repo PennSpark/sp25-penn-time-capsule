@@ -39,7 +39,7 @@ export default function EditCapsule() {
         }
       );
       setError("");
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error(err);
     }
