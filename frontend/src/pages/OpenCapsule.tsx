@@ -67,15 +67,12 @@ export default function OpenCapsule() {
   
   return (
     <div className="relative h-screen w-screen flex flex-col items-center justify-start font-poppins text-center py-20">
-      <GradientBackground />
-      <BackButton />
       {capsuleOpened ? (
         <>
+        <GradientBackground />
+        <BackButton />
         <Leva collapsed />
         <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white absolute">
-            Open Capsule
-          </h1>
           <div className="w-screen h-screen flex items-center justify-center">
             {showCanvas ? (
               <Canvas>
@@ -92,6 +89,8 @@ export default function OpenCapsule() {
       ) : (
         <>
           {/* Combined header and machine container */}
+          <GradientBackground />
+          <BackButton />
           <div className="absolute top-32 left-0 right-0 z-10">
             <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 mx-5">
               Spark
