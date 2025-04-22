@@ -100,21 +100,15 @@ const Register: React.FC = () => {
   });
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden font-poppins">
       <GradientBackground />
 
       <div className="login">
         <section id="login-form">
-          <h1
-            className="space-grotesk"
-            style={{ zIndex: 100, fontSize: "30px" }}
-          >
-            Set up your account
-          </h1>
-          <p className="space-grotesk" style={{ zIndex: 100 }}>
+          <h1 style={{ zIndex: 100, fontSize: "30px" }}>Set up your account</h1>
+          <p className="text-lg mb-2 z-50">
             Please complete all information to create your account on Capsule
           </p>
-          <br />
           <form onSubmit={handleSubmit} autoComplete="off">
             <div className="input-group">
               <input
@@ -293,20 +287,21 @@ const Register: React.FC = () => {
             )}
             <button
               type="submit"
-              className="bold-button flex items-center justify-center gap-2"
+              className="bold-button flex items-center justify-center"
+              style={{ marginTop: "25px", marginBottom: "25px" }}
             >
               Create Account
             </button>
             <div className="flex items-center justify-center">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="mx-4 text-gray-500">or</span>
-              <div className="flex-grow border-t border-gray-300"></div>
+              <div className="flex-grow border-t border-[1px] border-gray-200"></div>
+              <span className="mx-4 text-white text-lg">or</span>
+              <div className="flex-grow border-t border-[1px] border-gray-200"></div>
             </div>
 
             <button
               type="button"
               onClick={() => googleSignup()}
-              className="bold-button flex items-center justify-center gap-2"
+              className="google-button flex items-center justify-center gap-2"
             >
               Sign in with Google
             </button>
