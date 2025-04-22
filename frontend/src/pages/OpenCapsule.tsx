@@ -1,35 +1,40 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  useTexture,
+} from "@react-three/drei";
 import { Leva, useControls } from "leva";
 import * as THREE from "three";
 import BackButton from "../components/BackButton";
 import GradientBackground from "../components/GradientBackground";
 import GachaponMachineOpen from "../components/GachaponMachineOpen";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
+
+// Enable Three.js built-in cache
+THREE.Cache.enabled = true;
 
 // Define file type from backend
-type File = {
+export type File = {
   url: string;
   fileType: string;
 };
 
 export default function OpenCapsule() {
   const location = useLocation() as { state: { skipAnimation?: boolean } };
-  // If skipAnimation is truthy, start with canvas shown immediately
+  const [loading, setLoading] = useState(true);
   const [showCanvas, setShowCanvas] = useState<boolean>(
     () => !!location.state?.skipAnimation
   );
 
   useEffect(() => {
-    // Only schedule the 10s timeout if we DIDN’T skip
     if (!location.state?.skipAnimation) {
       const timer = setTimeout(() => setShowCanvas(true), 10000);
       return () => clearTimeout(timer);
     }
   }, [location.state]);
 
-  // Backend fetch logic
   const capsuleId = localStorage.getItem("capsuleId") || "";
   const backendUrl =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
@@ -38,39 +43,34 @@ export default function OpenCapsule() {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
+        setLoading(true);
         const res = await fetch(`${backendUrl}/api/files/get/${capsuleId}`);
         const data = await res.json();
-        setFiles(data.files);
+        setFiles(data.files || []);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
     if (capsuleId) fetchFiles();
   }, [backendUrl, capsuleId]);
 
-  // Debug UI for parameters
   const params = useControls({
-    rows: { value: 7, min: 1, max: 20, step: 1 },
-    cols: { value: 7, min: 1, max: 20, step: 1 },
+    rows: { value: 5, min: 1, max: 20, step: 1 },
+    cols: { value: 5, min: 1, max: 20, step: 1 },
     curvature: { value: 5, min: 0, max: 20, step: 0.1 },
-    spacing: { value: 10, min: 0, max: 50, step: 0.1 },
-    imageWidth: { value: 7, min: 1, max: 20, step: 0.1 },
-    imageHeight: { value: 4.5, min: 1, max: 20, step: 0.1 },
+    spacing: { value: 12, min: 0, max: 50, step: 0.1 },
+    imageWidth: { value: 10, min: 1, max: 20, step: 0.1 },
+    imageHeight: { value: 6, min: 1, max: 20, step: 0.1 },
     depth: { value: 7.5, min: 0, max: 50, step: 0.1 },
     elevation: { value: 0, min: -10, max: 10, step: 0.1 },
-    lookAtRange: { value: 20, min: 1, max: 100, step: 1 },
+    lookAtRange: { value: 14, min: 1, max: 100, step: 1 },
     verticalCurvature: { value: 0.5, min: 0, max: 5, step: 0.1 },
   });
 
   // Derive data array from backend files
-  const data = [
-    { name: "filmBackground.jpg" },
-    { name: "filmBackground.jpg" },
-    { name: "filmBackground.jpg" },
-    { name: "filmBackground.jpg" },
-  ];
-
-  // useMemo(() => files.map((f) => ({ name: f.url })), [files]);
+  const data = useMemo(() => files.map((f) => ({ name: f.url })), [files]);
 
   return (
     <>
@@ -78,16 +78,20 @@ export default function OpenCapsule() {
       <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center">
         <GradientBackground />
         <BackButton />
-        <h1 className="text-3xl sm:text-4xl font-bold text-white absolute">
-          Open Capsule
-        </h1>
+
         <div className="w-screen h-screen flex items-center justify-center">
           {showCanvas ? (
-            <Canvas>
-              <PerspectiveCamera makeDefault position={[0, 0, 40]} />
-              <OrbitControls />
-              <Gallery data={data} params={params} />
-            </Canvas>
+            loading ? (
+              <div className="text-white text-2xl">Loading files...</div>
+            ) : data.length > 0 ? (
+              <Canvas>
+                <PerspectiveCamera makeDefault position={[0, 0, 40]} />
+                <OrbitControls />
+                <Gallery data={data} params={params} />
+              </Canvas>
+            ) : (
+              <div className="text-white text-lg">No images found.</div>
+            )
           ) : (
             <GachaponMachineOpen />
           )}
@@ -97,7 +101,7 @@ export default function OpenCapsule() {
   );
 }
 
-// Math helpers
+// Math helpers unchanged
 function calculateRotations(x: number, y: number, params: any) {
   const a = 1 / (params.depth * params.curvature);
   const rotationY = Math.atan(-2 * a * x);
@@ -117,7 +121,7 @@ function calculatePosition(row: number, col: number, params: any) {
   return { x, y: posY, z, rotationX, rotationY };
 }
 
-// Three.js image gallery
+// Three.js image gallery with preloaded textures
 function Gallery({ data, params }: any) {
   const { camera } = useThree();
   const navigate = useNavigate();
@@ -127,14 +131,16 @@ function Gallery({ data, params }: any) {
   refs.current = [];
   const addRef = (r: THREE.Mesh) => r && refs.current.push(r);
 
-  // Precompute metadata and load textures
-  const loader = useMemo(() => new THREE.TextureLoader(), []);
+  // Preload all textures and cache them
+  const textures = useTexture(data.map((d: any) => d.name));
+
   const planeMeta = useMemo(() => {
     const list: any[] = [];
     for (let row = 0; row < params.rows; row++) {
       for (let col = 0; col < params.cols; col++) {
-        const imgData = data[Math.floor(Math.random() * data.length)];
-        const texture = loader.load(imgData.name);
+        const textureArray = Object.values(textures);
+        const idx = (row * params.cols + col) % textureArray.length;
+        const texture = Object.values(textures)[idx];
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
 
@@ -164,9 +170,8 @@ function Gallery({ data, params }: any) {
       }
     }
     return list;
-  }, [data, loader, params]);
+  }, [textures, params]);
 
-  // Mouse parallax listener
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       mouse.current.x =
@@ -178,7 +183,6 @@ function Gallery({ data, params }: any) {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Animation loop
   useFrame(() => {
     mouse.current.tx += (mouse.current.x - mouse.current.tx) * 0.05;
     mouse.current.ty += (mouse.current.y - mouse.current.ty) * 0.05;
@@ -216,7 +220,6 @@ function Gallery({ data, params }: any) {
     });
   });
 
-  // Render planes
   return planeMeta.map((m) => (
     <mesh
       key={m.key}
@@ -226,6 +229,8 @@ function Gallery({ data, params }: any) {
       onClick={() =>
         navigate("/gallery", { state: { imageUrl: m.texture.image.src } })
       }
+      onPointerOver={(e) => (document.body.style.cursor = "pointer")}
+      onPointerOut={(e) => (document.body.style.cursor = "default")}
     >
       <planeGeometry args={[params.imageWidth, params.imageHeight]} />
       <meshBasicMaterial

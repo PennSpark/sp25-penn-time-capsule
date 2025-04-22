@@ -188,7 +188,7 @@ function Dashboard() {
         {viewMode === "swipe" ? (
           <div className="relative h-full w-full">
             {/* Swipe View */}
-            <div className="absolute top-32 left-0 right-0 text-center z-10">
+            <div className="absolute top-30 left-0 right-0 text-center z-10">
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">
                 {capsules[currentIndex].name}
                 <button
@@ -217,7 +217,7 @@ function Dashboard() {
             </div>
 
             {/* 3D Canvas */}
-            <div className="absolute inset-0 flex items-center justify-center mt-16 md:mt-20">
+            <div className="absolute inset-0 flex items-center justify-center mt-8 md:mt-12">
               <GachaponMachineIdle />
             </div>
 
@@ -232,21 +232,22 @@ function Dashboard() {
             />
 
             {/* Pagination Dots */}
-            {!isCapsuleOpenable(capsules[currentIndex].date) && (
-              <div className="absolute bottom-22 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
-                {capsules.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`rounded-full transition-all duration-300 ${
-                      index === currentIndex
-                        ? "h-6 w-6 bg-white"
-                        : "h-3 w-3 bg-white/40"
-                    }`}
-                    onClick={() => setCurrentIndex(index)}
-                  />
-                ))}
-              </div>
-            )}
+
+            <div
+              className={`absolute bottom-32 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3`}
+            >
+              {capsules.map((_, index) => (
+                <div
+                  key={index}
+                  className={`rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? "h-6 w-6 bg-white"
+                      : "h-3 w-3 bg-white/40"
+                  }`}
+                  onClick={() => setCurrentIndex(index)}
+                />
+              ))}
+            </div>
 
             {/* Capsule Opening Button */}
             {isCapsuleOpenable(capsules[currentIndex].date) && (
@@ -254,16 +255,18 @@ function Dashboard() {
             )}
 
             {/* Plus Button */}
-            {!isCapsuleOpenable(capsules[currentIndex].date) && (
-              <button
-                title="Add"
-                ref={plusButtonRef}
-                className="absolute bottom-16 right-8 z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition-all duration-300"
-                onClick={toggleMenu}
-              >
-                <Plus className="h-8 w-8 text-white" />
-              </button>
-            )}
+            <button
+              title="Add"
+              ref={plusButtonRef}
+              className={`absolute z-10 bg-white/20 backdrop-blur-md rounded-full p-4 shadow-lg cursor-pointer hover:brightness-125 transition-all duration-300 ${
+                !isCapsuleOpenable(capsules[currentIndex].date)
+                  ? "bottom-16 right-8"
+                  : "top-6 right-8"
+              }`}
+              onClick={toggleMenu}
+            >
+              <Plus className="h-8 w-8 text-white" />
+            </button>
 
             {/* Translucent Menu */}
             {menuOpen && (
@@ -271,7 +274,9 @@ function Dashboard() {
                 title="Menu"
                 className="absolute z-20 menu-container"
                 style={{
-                  bottom: "140px",
+                  bottom: !isCapsuleOpenable(capsules[currentIndex].date)
+                    ? "140px"
+                    : "400px",
                   right: "32px",
                 }}
               >
