@@ -56,7 +56,7 @@ function Onboarding() {
       {/* Intro Screen 1 */}
       {currentStep === 1 && (
         <div className="absolute inset-0 flex flex-col items-center z-20 px-6">
-          <div className="absolute top-32 left-0 right-0 text-center">
+          <div className="absolute top-28 left-0 right-0 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
               Capsule
             </h1>
@@ -82,7 +82,7 @@ function Onboarding() {
       {/* Intro Screen 2 */}
       {currentStep === 2 && (
         <div className="absolute inset-0 flex flex-col items-center z-20 px-6">
-          <div className="absolute top-32 left-0 right-0 text-center">
+          <div className="absolute top-28 left-0 right-0 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
               Capsule
             </h1>
@@ -92,11 +92,11 @@ function Onboarding() {
           </div>
 
           {/* 3D Canvas - same size as dashboard */}
-          <div className="absolute inset-0 flex items-center justify-center mt-16 md:mt-20">
+          <div className="absolute inset-0 flex items-center justify-center">
             <GachaponMachineUploadMemory />
           </div>
 
-          <div className="absolute bottom-24 left-0 right-0 px-6">
+          <div className="absolute bottom-22 left-0 right-0 px-6">
             <p className="text-lg text-white/90 text-center max-w-md mx-auto">
               Upload memories from your camera roll and store them in a gachapon
               ball!
@@ -153,7 +153,7 @@ function Onboarding() {
           </div>
 
           {/* Swipe View */}
-          <div className="absolute top-32 left-0 right-0 text-center z-10">
+          <div className="absolute top-28 left-0 right-0 text-center z-10">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">
               Spark
             </h1>
@@ -250,7 +250,7 @@ function Onboarding() {
           </div>
 
           {/* Swipe View */}
-          <div className="absolute top-32 left-0 right-0 text-center z-10">
+          <div className="absolute top-28 left-0 right-0 text-center z-10">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">
               Spark
             </h1>
@@ -302,7 +302,7 @@ function Onboarding() {
       {/* Open Capsule Tutorial */}
       {currentStep === 5 && (
         <div className="absolute inset-0 z-20">
-          <div className="absolute top-32 left-0 right-0 text-center">
+          <div className="absolute top-28 left-0 right-0 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
               me + friends
             </h1>
@@ -330,7 +330,7 @@ function Onboarding() {
       {/* Final Tutorial Screen */}
       {currentStep === 6 && (
         <div className="absolute inset-0 z-20">
-          <div className="absolute top-32 left-0 right-0 text-center">
+          <div className="absolute top-28 left-0 right-0 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
               me + friends
             </h1>
