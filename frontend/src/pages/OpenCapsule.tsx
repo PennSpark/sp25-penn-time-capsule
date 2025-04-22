@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   PerspectiveCamera,
@@ -69,7 +69,7 @@ export default function OpenCapsule() {
     verticalCurvature: { value: 0.5, min: 0, max: 5, step: 0.1 },
   });
 
-  // Derive data array from backend files
+  // derive data array from backend files
   const data = useMemo(() => files.map((f) => ({ name: f.url })), [files]);
 
   return (
@@ -121,7 +121,7 @@ function calculatePosition(row: number, col: number, params: any) {
   return { x, y: posY, z, rotationX, rotationY };
 }
 
-// Three.js image gallery with preloaded textures
+// Three.js image gallery
 function Gallery({ data, params }: any) {
   const { camera } = useThree();
   const navigate = useNavigate();
@@ -131,7 +131,7 @@ function Gallery({ data, params }: any) {
   refs.current = [];
   const addRef = (r: THREE.Mesh) => r && refs.current.push(r);
 
-  // Preload all textures and cache them
+  // preload all textures and cache them, drei handles automatically
   const textures = useTexture(data.map((d: any) => d.name));
 
   const planeMeta = useMemo(() => {

@@ -239,7 +239,7 @@ function Dashboard() {
               {capsules.map((_, index) => (
                 <div
                   key={index}
-                  className={`rounded-full transition-all duration-300 ${
+                  className={`rounded-full transition-all duration-300 cursor-pointer ${
                     index === currentIndex
                       ? "h-6 w-6 bg-white"
                       : "h-3 w-3 bg-white/40"

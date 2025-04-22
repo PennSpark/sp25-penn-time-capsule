@@ -16,7 +16,9 @@ export default function DeleteButton({ capsuleId, token }: DeleteButtonProps) {
     setLoading(true);
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/timecapsule/leave/${capsuleId}`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/timecapsule/leave/${capsuleId}`,
         {
           method: "DELETE",
           headers: {

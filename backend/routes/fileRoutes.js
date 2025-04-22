@@ -17,7 +17,7 @@ const s3 = new AWS.S3({
 const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB file size limit
+  limits: { fileSize: 2 * 1024 * 1024 * 1024 }, // 2GB file limit
 });
 
 // Upload file to S3 and update TimeCapsule document
