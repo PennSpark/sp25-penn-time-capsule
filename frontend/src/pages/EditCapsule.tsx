@@ -4,6 +4,7 @@ import GradientBackground from "../components/GradientBackground";
 import BackButton from "../components/BackButton";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import DeleteButton from "../components/DeleteButton";
 
 export default function EditCapsule() {
   const [name, setName] = useState("");
@@ -48,8 +49,9 @@ export default function EditCapsule() {
     <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center py-20">
       <GradientBackground />
 
-      {/* Back button */}
+      {/* Utility buttons */}
       <BackButton />
+      <DeleteButton />
 
       <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 mx-5">
         Edit Capsule
