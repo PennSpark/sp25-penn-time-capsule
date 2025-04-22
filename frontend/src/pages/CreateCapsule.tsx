@@ -2,15 +2,16 @@ import { useRef, useState } from "react";
 import { Calendar, Pencil } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
 import BackButton from "../components/BackButton";
-import axios from "axios"
-import {useNavigate} from "react-router";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function CreateCapsule() {
   const [name, setName] = useState("");
   const [openingDate, setOpeningDate] = useState("");
   const [error, setError] = useState("");
   const dateInputRef = useRef<HTMLInputElement>(null);
-  const backendUrl: string = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const backendUrl: string =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
   const navigate = useNavigate();
 
   const onDateRowClick = () => {
@@ -21,24 +22,24 @@ export default function CreateCapsule() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
-      if(name === "" || openingDate === "") {
+      if (name === "" || openingDate === "") {
         setError("Please enter a Capsule Name and Opening Date");
         return;
       } else {
         const token = localStorage.getItem("token");
-        const response = await axios.post(`${backendUrl}/api/timecapsule/create`,
-          {name: name, date: openingDate},
+        const response = await axios.post(
+          `${backendUrl}/api/timecapsule/create`,
+          { name: name, date: openingDate },
           {
-            headers: {Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         setError("");
-        navigate("/");
+        navigate("/dashboard");
       }
-
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
     // submit logic…
@@ -95,11 +96,7 @@ export default function CreateCapsule() {
             className="flex-1 bg-transparent outline-none text-white placeholder-white/70 text-lg"
           />
         </div>
-        {error && (
-          <div className="text-red-500 text-sm">
-            {error}
-          </div>
-        )}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         {/* Save button */}
         <button

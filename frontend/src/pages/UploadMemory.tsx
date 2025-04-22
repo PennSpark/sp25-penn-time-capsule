@@ -61,7 +61,7 @@ export default function UploadMemory() {
 
       console.log("All files uploaded");
       setTimeout(() => {
-        navigate("/");
+        navigate("/dashboard");
       }, 10000); // Redirect after 10 seconds -- make length of animation
     } catch (err) {
       console.error("Upload error:", err);

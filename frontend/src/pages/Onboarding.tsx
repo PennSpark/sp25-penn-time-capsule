@@ -1,42 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useNavigate } from "react-router"
-import { Calendar, Plus } from "lucide-react"
-import GradientBackground from "../components/GradientBackground"
-import GachaponBallsFalling from "../components/GachaponBallsFalling"
-import GachaponMachineIdle from "../components/GachaponMachineIdle"
-import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory"
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { Calendar, Plus } from "lucide-react";
+import GradientBackground from "../components/GradientBackground";
+import GachaponBallsFalling from "../components/GachaponBallsFalling";
+import GachaponMachineIdle from "../components/GachaponMachineIdle";
+import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
 
 function Onboarding() {
-  const [currentStep, setCurrentStep] = useState(0)
-  const navigate = useNavigate()
+  const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
 
   // Handle screen tap to advance
   const handleScreenTap = () => {
     if (currentStep < 6) {
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(currentStep + 1);
     } else {
       // Navigate to dashboard when onboarding is complete
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
-  }
+  };
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden font-poppins" onClick={handleScreenTap}>
+    <div
+      className="relative h-screen w-screen overflow-hidden font-poppins"
+      onClick={handleScreenTap}
+    >
       {/* Gradient Background (present on all screens) */}
       <GradientBackground />
 
       {currentStep === 0 && (
-    <>
-      {/* 3D balls layer */}
-      <div className="absolute inset-0 z-10">
-        <GachaponBallsFalling />
-      </div>
+        <>
+          {/* 3D balls layer */}
+          <div className="absolute inset-0 z-10">
+            <GachaponBallsFalling />
+          </div>
 
-      {/* text overlay layer */}
-      <h1
-        className="
+          {/* text overlay layer */}
+          <h1
+            className="
           absolute inset-0
           z-20
           flex items-center justify-center
@@ -44,20 +47,22 @@ function Onboarding() {
           text-white text-center px-6
           pointer-events-none
         "
-      >
-        Welcome to Capsule
-      </h1>
-    </>
-  )}
-
-      
+          >
+            Welcome to Capsule
+          </h1>
+        </>
+      )}
 
       {/* Intro Screen 1 */}
       {currentStep === 1 && (
         <div className="absolute inset-0 flex flex-col items-center z-20 px-6">
           <div className="absolute top-32 left-0 right-0 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Capsule</h1>
-            <p className="text-xl text-white/80 mb-12">Capture. Collect. Relive.</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              Capsule
+            </h1>
+            <p className="text-xl text-white/80 mb-12">
+              Capture. Collect. Relive.
+            </p>
           </div>
 
           {/* 3D Canvas - same size as dashboard */}
@@ -67,7 +72,8 @@ function Onboarding() {
 
           <div className="absolute bottom-24 left-0 right-0 px-6">
             <p className="text-lg text-white/90 text-center max-w-md mx-auto">
-              Store your memories in a capsule machine and open all the memories together with friends!
+              Store your memories in a capsule machine and open all the memories
+              together with friends!
             </p>
           </div>
         </div>
@@ -77,8 +83,12 @@ function Onboarding() {
       {currentStep === 2 && (
         <div className="absolute inset-0 flex flex-col items-center z-20 px-6">
           <div className="absolute top-32 left-0 right-0 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">Capsule</h1>
-            <p className="text-xl text-white/80 mb-12">Capture. Collect. Relive.</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              Capsule
+            </h1>
+            <p className="text-xl text-white/80 mb-12">
+              Capture. Collect. Relive.
+            </p>
           </div>
 
           {/* 3D Canvas - same size as dashboard */}
@@ -88,7 +98,8 @@ function Onboarding() {
 
           <div className="absolute bottom-24 left-0 right-0 px-6">
             <p className="text-lg text-white/90 text-center max-w-md mx-auto">
-              Upload memories from your camera roll and store them in a gachapon ball!
+              Upload memories from your camera roll and store them in a gachapon
+              ball!
             </p>
           </div>
         </div>
@@ -143,7 +154,9 @@ function Onboarding() {
 
           {/* Swipe View */}
           <div className="absolute top-32 left-0 right-0 text-center z-10">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">Spark</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">
+              Spark
+            </h1>
 
             <div className="flex items-center justify-center text-white/80 mb-12">
               <Calendar className="h-4 w-4 mr-2" />
@@ -160,30 +173,30 @@ function Onboarding() {
           </div>
 
           {/* Plus “button” – transparent look, not clickable */}
-        <div className="absolute bottom-16 right-8 z-20 pointer-events-none">
+          <div className="absolute bottom-16 right-8 z-20 pointer-events-none">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-                <Plus className="h-8 w-8 text-white" />
+              <Plus className="h-8 w-8 text-white" />
             </div>
-        </div>
+          </div>
 
-
-        <div
-        className="absolute bottom-22 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className={`
+          <div className="absolute bottom-22 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className={`
               rounded-full transition-all
-              ${i === 1 ? 'h-6 w-6 bg-white' : 'h-3 w-3 bg-white/40'}
+              ${i === 1 ? "h-6 w-6 bg-white" : "h-3 w-3 bg-white/40"}
             `}
-          />
-        ))}
-      </div>
+              />
+            ))}
+          </div>
 
           {/* Info Box - smaller and below model */}
           <div className="absolute bottom-27 right-9/19 transform -translate-x-1/2 -translate-x-4 z-20">
             <div className="glass-background rounded-lg p-3 max-w-[200px]">
-              <p className="text-white text-center text-sm">Access all your capsules on the main page</p>
+              <p className="text-white text-center text-sm">
+                Access all your capsules on the main page
+              </p>
             </div>
           </div>
         </div>
@@ -238,7 +251,9 @@ function Onboarding() {
 
           {/* Swipe View */}
           <div className="absolute top-32 left-0 right-0 text-center z-10">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">Spark</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 break-words">
+              Spark
+            </h1>
 
             <div className="flex items-center justify-center text-white/80 mb-12">
               <Calendar className="h-4 w-4 mr-2" />
@@ -252,32 +267,33 @@ function Onboarding() {
           </div>
 
           <div className="absolute bottom-14 right-8 z-20 pointer-events-none">
-        
-        {/* square box around the plus */}
-        <div className="border-2 border-white bg-white/10 rounded-lg p-2 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
-            <Plus className="h-8 w-8 text-white" />
+            {/* square box around the plus */}
+            <div className="border-2 border-white bg-white/10 rounded-lg p-2 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                <Plus className="h-8 w-8 text-white" />
+              </div>
             </div>
-        </div>
-        </div>
+          </div>
 
-        <div
-        className="absolute bottom-22 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className={`
+          <div className="absolute bottom-22 items-center left-1/2 transform -translate-x-1/2 z-10 flex space-x-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className={`
               rounded-full transition-all
-              ${i === 1 ? 'h-6 w-6 bg-white' : 'h-3 w-3 bg-white/40'}
+              ${i === 1 ? "h-6 w-6 bg-white" : "h-3 w-3 bg-white/40"}
             `}
-          />
-        ))}
-      </div>
+              />
+            ))}
+          </div>
 
           {/* Info Box */}
           <div className="absolute bottom-14 right-32 z-20">
-            <div className="glass-background rounded-lg p-3 max-w-[160px]">
-              <p className="text-white text-center text-sm">Access all your capsules on the main page</p>
+            <div className="glass-background rounded-lg p-3 max-w-[250px]">
+              <p className="text-white text-center text-sm">
+                Click here for external actions like joining a capsule or
+                uploading memories!
+              </p>
             </div>
           </div>
         </div>
@@ -287,7 +303,9 @@ function Onboarding() {
       {currentStep === 5 && (
         <div className="absolute inset-0 z-20">
           <div className="absolute top-32 left-0 right-0 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">me + friends</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              me + friends
+            </h1>
           </div>
 
           {/* 3D Canvas */}
@@ -295,13 +313,15 @@ function Onboarding() {
             <GachaponMachineIdle />
           </div>
 
-          <button className="absolute uppercase w-[170px] max-w-sm text-2xl bottom-34 left-1/2 transform -translate-x-1/2 z-20 bg-white/20 backdrop-blur-md cursor-pointer text-white font-semibold px-6 py-2.5 rounded-xl">
+          <button className="absolute uppercase w-[170px] max-w-sm text-2xl bottom-32 left-1/2 transform -translate-x-1/2 z-20 bg-white/20 backdrop-blur-md cursor-pointer text-white font-semibold px-6 py-2.5 rounded-xl">
             OPEN!
           </button>
 
-          <div className="absolute bottom-15 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20">
             <div className="glass-background rounded-lg p-3 max-w-[250px]">
-              <p className="text-white text-center text-sm">Open all the memories on a pre-selected day with friends</p>
+              <p className="text-white text-center text-sm">
+                Open all the memories on a pre-selected day with friends
+              </p>
             </div>
           </div>
         </div>
@@ -311,18 +331,21 @@ function Onboarding() {
       {currentStep === 6 && (
         <div className="absolute inset-0 z-20">
           <div className="absolute top-32 left-0 right-0 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">me + friends</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              me + friends
+            </h1>
           </div>
 
           {/* 3D Canvas */}
           <div className="absolute inset-0 flex items-center justify-center transform -translate-y-8 mt-16 md:mt-20">
-            <GachaponMachineIdle/>
+            <GachaponMachineIdle />
           </div>
 
           <div className="absolute bottom-15 left-1/2 transform -translate-x-1/2 z-20">
             <div className="glass-background rounded-lg p-3 max-w-[250px]">
               <p className="text-white text-center text-sm">
-                Watch the memories open up in a timelapse video and share it with friends!
+                Watch the memories open up in a timelapse video and share it
+                with friends!
               </p>
             </div>
           </div>
@@ -336,7 +359,7 @@ function Onboarding() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default Onboarding
+export default Onboarding;

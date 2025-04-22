@@ -11,7 +11,7 @@ import CreateCapsule from "./pages/CreateCapsule";
 import UploadMemory from "./pages/UploadMemory";
 import EditCapsule from "./pages/EditCapsule";
 import OpenCapsule from "./pages/OpenCapsule";
-import Onboarding from "./pages/Onboarding"
+import Onboarding from "./pages/Onboarding";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

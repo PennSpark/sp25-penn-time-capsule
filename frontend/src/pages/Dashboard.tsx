@@ -8,6 +8,8 @@ import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemo
 import { useNavigate } from "react-router";
 import JoinCapsuleModal from "../components/JoinCapsuleModal";
 import MachineCodeModal from "../components/MachineCodeModal";
+import InfoButton from "../components/InfoButton";
+import OpenButton from "../components/OpenButton";
 
 type TimeCapsule = {
   _id: string;
@@ -40,9 +42,9 @@ function Dashboard() {
   };
 
   const handleEditCapsule = () => {
-    const capsuleId = capsules[currentIndex]._id
-    const capsuleName = capsules[currentIndex].name
-    const capsuleDate = capsules[currentIndex].date
+    const capsuleId = capsules[currentIndex]._id;
+    const capsuleName = capsules[currentIndex].name;
+    const capsuleDate = capsules[currentIndex].date;
     localStorage.setItem("capsuleId", capsuleId);
     localStorage.setItem("capsuleName", capsuleName);
     localStorage.setItem("capsuleDate", capsuleDate);
@@ -53,7 +55,7 @@ function Dashboard() {
     navigate("/upload");
   };
   const handleOpenCapsule = () => {
-    const capsuleId = capsules[currentIndex]._id
+    const capsuleId = capsules[currentIndex]._id;
     localStorage.setItem("capsuleId", capsuleId);
     navigate("/open");
   };
@@ -248,12 +250,7 @@ function Dashboard() {
 
             {/* Capsule Opening Button */}
             {isCapsuleOpenable(capsules[currentIndex].date) && (
-              <button
-                onClick={handleOpenCapsule}
-                className="absolute uppercase saturate-100 w-[80%] max-w-sm text-2xl bottom-14 left-1/2 transform -translate-x-1/2 z-20 glass-golden pulse cursor-pointer hover:brightness-110 text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300"
-              >
-                Open Capsule!
-              </button>
+              <OpenButton onClick={handleOpenCapsule} />
             )}
 
             {/* Plus Button */}
@@ -361,6 +358,7 @@ function Dashboard() {
         onClose={handleCloseMachineCodeModal}
         onCopy={handleCopyCode}
       />
+      <InfoButton />
     </>
   );
 }
