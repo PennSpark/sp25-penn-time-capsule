@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Leva, useControls } from "leva";
@@ -14,11 +14,12 @@ type File = {
 };
 
 export default function OpenCapsule() {
-  const [showCanvas, setShowCanvas] = useState(false);
+  const [showCanvas, setShowCanvas] = useState(true);
 
   // Backend fetch logic
   const capsuleId = localStorage.getItem("capsuleId") || "";
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
   const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
@@ -51,14 +52,18 @@ export default function OpenCapsule() {
     depth: { value: 7.5, min: 0, max: 50, step: 0.1 },
     elevation: { value: 0, min: -10, max: 10, step: 0.1 },
     lookAtRange: { value: 20, min: 1, max: 100, step: 1 },
-    verticalCurvature: { value: 0.5, min: 0, max: 5, step: 0.1 }
+    verticalCurvature: { value: 0.5, min: 0, max: 5, step: 0.1 },
   });
 
   // Derive data array from backend files
-  const data = useMemo(
-    () => files.map(f => ({ name: f.url })),
-    [files]
-  );
+  const data = [
+    { name: "filmBackground.jpg" },
+    { name: "filmBackground.jpg" },
+    { name: "filmBackground.jpg" },
+    { name: "filmBackground.jpg" },
+  ];
+
+  // useMemo(() => files.map((f) => ({ name: f.url })), [files]);
 
   return (
     <>
@@ -125,16 +130,28 @@ function Gallery({ data, params }: any) {
         texture.minFilter = THREE.LinearFilter;
         texture.magFilter = THREE.LinearFilter;
 
-        const { x, y, z, rotationX, rotationY } = calculatePosition(row, col, params);
+        const { x, y, z, rotationX, rotationY } = calculatePosition(
+          row,
+          col,
+          params
+        );
         list.push({
           key: `${row}-${col}`,
           texture,
           basePos: { x, y, z },
           baseRot: { x: rotationX, y: rotationY, z: 0 },
           parallaxFactor: Math.random() * 0.5 + 0.5,
-          randomOffset: { x: Math.random()*2-1, y: Math.random()*2-1, z: Math.random()*2-1 },
-          rotationMod: { x: (Math.random()-0.5)*0.15, y: (Math.random()-0.5)*0.15, z: (Math.random()-0.5)*0.2 },
-          phaseOffset: Math.random() * Math.PI * 2
+          randomOffset: {
+            x: Math.random() * 2 - 1,
+            y: Math.random() * 2 - 1,
+            z: Math.random() * 2 - 1,
+          },
+          rotationMod: {
+            x: (Math.random() - 0.5) * 0.15,
+            y: (Math.random() - 0.5) * 0.15,
+            z: (Math.random() - 0.5) * 0.2,
+          },
+          phaseOffset: Math.random() * Math.PI * 2,
         });
       }
     }
@@ -144,8 +161,10 @@ function Gallery({ data, params }: any) {
   // Mouse parallax listener
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      mouse.current.x = (e.clientX - window.innerWidth/2) / (window.innerWidth/2);
-      mouse.current.y = (e.clientY - window.innerHeight/2) / (window.innerHeight/2);
+      mouse.current.x =
+        (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      mouse.current.y =
+        (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
@@ -161,7 +180,7 @@ function Gallery({ data, params }: any) {
     lookAtTarget.current.set(
       tX * params.lookAtRange,
       -tY * params.lookAtRange,
-      (tX*tX)/(params.depth*params.curvature)
+      (tX * tX) / (params.depth * params.curvature)
     );
     camera.lookAt(lookAtTarget.current);
 
@@ -180,15 +199,17 @@ function Gallery({ data, params }: any) {
         m.basePos.z + osc * m.randomOffset.z * m.parallaxFactor
       );
       mesh.rotation.set(
-        m.baseRot.x + tY * m.rotationMod.x * dist + osc*m.rotationMod.x*0.2,
-        m.baseRot.y + tX * m.rotationMod.y * dist + osc*m.rotationMod.y*0.2,
-        m.baseRot.z + tX*tY*m.rotationMod.z*2 + osc*m.rotationMod.z*0.3
+        m.baseRot.x + tY * m.rotationMod.x * dist + osc * m.rotationMod.x * 0.2,
+        m.baseRot.y + tX * m.rotationMod.y * dist + osc * m.rotationMod.y * 0.2,
+        m.baseRot.z +
+          tX * tY * m.rotationMod.z * 2 +
+          osc * m.rotationMod.z * 0.3
       );
     });
   });
 
   // Render planes
-  return planeMeta.map(m => (
+  return planeMeta.map((m) => (
     <mesh
       key={m.key}
       ref={addRef}
@@ -196,7 +217,11 @@ function Gallery({ data, params }: any) {
       rotation={[m.baseRot.x, m.baseRot.y, m.baseRot.z]}
     >
       <planeGeometry args={[params.imageWidth, params.imageHeight]} />
-      <meshBasicMaterial map={m.texture} side={THREE.DoubleSide} toneMapped={false} />
+      <meshBasicMaterial
+        map={m.texture}
+        side={THREE.DoubleSide}
+        toneMapped={false}
+      />
     </mesh>
   ));
 }
