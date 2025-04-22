@@ -6,7 +6,7 @@ import * as THREE from "three";
 import BackButton from "../components/BackButton";
 import GradientBackground from "../components/GradientBackground";
 import GachaponMachineOpen from "../components/GachaponMachineOpen";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 // Define file type from backend
 type File = {
@@ -15,7 +15,19 @@ type File = {
 };
 
 export default function OpenCapsule() {
-  const [showCanvas, setShowCanvas] = useState(false);
+  const location = useLocation() as { state: { skipAnimation?: boolean } };
+  // If skipAnimation is truthy, start with canvas shown immediately
+  const [showCanvas, setShowCanvas] = useState<boolean>(
+    () => !!location.state?.skipAnimation
+  );
+
+  useEffect(() => {
+    // Only schedule the 10s timeout if we DIDN’T skip
+    if (!location.state?.skipAnimation) {
+      const timer = setTimeout(() => setShowCanvas(true), 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state]);
 
   // Backend fetch logic
   const capsuleId = localStorage.getItem("capsuleId") || "";
@@ -35,12 +47,6 @@ export default function OpenCapsule() {
     };
     if (capsuleId) fetchFiles();
   }, [backendUrl, capsuleId]);
-
-  // After animation, show Three.js canvas
-  useEffect(() => {
-    const timer = setTimeout(() => setShowCanvas(true), 10000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Debug UI for parameters
   const params = useControls({
