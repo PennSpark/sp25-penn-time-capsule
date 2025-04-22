@@ -344,8 +344,8 @@ function Onboarding() {
           <div className="absolute bottom-15 left-1/2 transform -translate-x-1/2 z-20">
             <div className="glass-background rounded-lg p-3 max-w-[250px]">
               <p className="text-white text-center text-sm">
-                Watch the memories open up in a timelapse video and share it
-                with friends!
+                Experience and relive the memories via an interactive 3D
+                gallery!
               </p>
             </div>
           </div>

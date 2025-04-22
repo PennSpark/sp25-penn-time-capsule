@@ -80,15 +80,13 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden font-poppins">
       <GradientBackground />
 
       <div className="login">
         <section id="login-form">
-          <h1 className="space-grotesk" style={{ zIndex: 100 }}>
-            Capsule
-          </h1>
-          <p className="space-grotesk" style={{ zIndex: 100 }}>
+          <h1 className="text-4xl z-50">Capsule</h1>
+          <p className="text-lg font-semibold mb-8 z-50">
             Capture. Collect. Relive.
           </p>
           <form onSubmit={handleSubmit} autoComplete="off">
@@ -183,7 +181,7 @@ const Login: React.FC = () => {
               </div>
             )}
             <p
-              className="space-grotesk forgot-pwd"
+              className="forgot-pwd"
               style={{ zIndex: 100, position: "relative", marginRight: "0px" }}
             >
               Forgot Password?
@@ -216,15 +214,15 @@ const Login: React.FC = () => {
                 />
               </svg>
             </button>
-            <div className="flex items-center justify-center">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="mx-4 text-gray-500">or</span>
-              <div className="flex-grow border-t border-gray-300"></div>
+            <div className="flex items-center justify-center my-8">
+              <div className="flex-grow border-t border-[1px] border-gray-200"></div>
+              <span className="mx-4 text-white text-lg">or</span>
+              <div className="flex-grow border-t border-[1px] border-gray-200"></div>
             </div>
             <button
               type="button"
               onClick={() => googleLogin()}
-              className="bold-button flex items-center justify-center gap-2"
+              className="google-button flex items-center justify-center gap-2"
             >
               Sign in with Google
             </button>
