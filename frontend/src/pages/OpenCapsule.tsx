@@ -1,41 +1,41 @@
+import BackButton from "../components/BackButton";
+import GradientBackground from "../components/GradientBackground";
+import GachaponMachineOpen from "../components/GachaponMachineOpen";
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Calendar, Grid, ImageIcon, Plus, Code2 } from "lucide-react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Leva, useControls } from "leva";
 import * as THREE from "three";
-import BackButton from "../components/BackButton";
-import GradientBackground from "../components/GradientBackground";
-import GachaponMachineOpen from "../components/GachaponMachineOpen";
 
-// Define file type from backend
-type File = {
-  url: string;
-  fileType: string;
-};
+type file = 
+{
+  url: String,
+  fileType: String
+}
 
 export default function OpenCapsule() {
   const [showCanvas, setShowCanvas] = useState(true);
-
-  // Backend fetch logic
-  const capsuleId = localStorage.getItem("capsuleId") || "";
-  const backendUrl =
-    import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
-  const [files, setFiles] = useState<File[]>([]);
-
+  const capsuleId: String = localStorage.getItem("capsuleId") || "";
+  const [files, setFiles] = useState<file[]>([]);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+  const [capsuleOpened, setCapsuleOpened] = useState<boolean>(false);
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const res = await fetch(`${backendUrl}/api/files/get/${capsuleId}`);
+        const res = await fetch(`${backendUrl}/api/files/get/${capsuleId}`)
         const data = await res.json();
         setFiles(data.files);
-      } catch (err) {
-        console.error(err);
+        console.log(data.files)
+  
+      } catch(err) {
+        console.error(err)
       }
-    };
-    if (capsuleId) fetchFiles();
-  }, [backendUrl, capsuleId]);
+    }
+    fetchFiles();
+    
+  }, [])
 
-  // After animation, show Three.js canvas
   useEffect(() => {
     const timer = setTimeout(() => setShowCanvas(true), 10000);
     return () => clearTimeout(timer);
@@ -63,34 +63,76 @@ export default function OpenCapsule() {
     { name: "filmBackground.jpg" },
   ];
 
-  // useMemo(() => files.map((f) => ({ name: f.url })), [files]);
 
+  
   return (
-    <>
-      <Leva collapsed />
-      <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center">
-        <GradientBackground />
-        <BackButton />
-        <h1 className="text-3xl sm:text-4xl font-bold text-white absolute">
-          Open Capsule
-        </h1>
-        <div className="w-screen h-screen flex items-center justify-center">
-          {showCanvas ? (
-            <Canvas>
-              <PerspectiveCamera makeDefault position={[0, 0, 40]} />
-              <OrbitControls />
-              <Gallery data={data} params={params} />
-            </Canvas>
-          ) : (
-            <GachaponMachineOpen />
-          )}
+    <div className="relative h-screen w-screen flex flex-col items-center justify-start font-poppins text-center py-20">
+      <GradientBackground />
+      <BackButton />
+      {capsuleOpened ? (
+        <>
+        <Leva collapsed />
+        <div className="relative h-screen w-screen flex flex-col items-center justify-center font-poppins text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white absolute">
+            Open Capsule
+          </h1>
+          <div className="w-screen h-screen flex items-center justify-center">
+            {showCanvas ? (
+              <Canvas>
+                <PerspectiveCamera makeDefault position={[0, 0, 40]} />
+                <OrbitControls />
+                <Gallery data={data} params={params} />
+              </Canvas>
+            ) : (
+              <GachaponMachineOpen />
+            )}
+          </div>
         </div>
-      </div>
-    </>
+      </>
+      ) : (
+        <>
+          {/* Combined header and machine container */}
+          <div className="absolute top-32 left-0 right-0 z-10">
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 mx-5">
+              Spark
+            </h1>
+
+            <div className="flex items-center justify-center text-white/80 mb-4">
+              <Calendar className="h-4 w-4 mr-2" />
+              <span className="text-lg md:text-2xl">
+                {new Date(localStorage.getItem("capsuleDate") || "").toLocaleDateString(
+                  "en-US",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}
+              </span>
+            </div>
+
+            <img
+              alt="machine"
+              src="machine_render.png"
+              className="max-h-80 mx-auto"
+            />
+            <button
+  onClick={() => setCapsuleOpened(true)}
+  className="mx-auto block mt-6 px-10 py-5 text-sm font-semibold text-white rounded-md bg-white/10 hover:bg-white/20 hover:scale-105 transition transform duration-300"
+>
+  Open Capsule
+</button>
+          </div>
+        </>
+      )}
+
+
+      
+    </div>
+
+
   );
 }
-
-// Math helpers
 function calculateRotations(x: number, y: number, params: any) {
   const a = 1 / (params.depth * params.curvature);
   const rotationY = Math.atan(-2 * a * x);
