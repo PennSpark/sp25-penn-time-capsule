@@ -12,6 +12,7 @@ import UploadMemory from "./pages/UploadMemory";
 import EditCapsule from "./pages/EditCapsule";
 import OpenCapsule from "./pages/OpenCapsule";
 import Onboarding from "./pages/Onboarding";
+import GalleryView from "./pages/GalleryView";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/edit" element={<EditCapsule />} />
           <Route path="/upload" element={<UploadMemory />} />
           <Route path="/open" element={<OpenCapsule />} />
+          <Route path="/gallery" element={<GalleryView />} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>

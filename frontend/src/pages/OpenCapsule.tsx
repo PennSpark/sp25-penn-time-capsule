@@ -7,6 +7,10 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Leva, useControls } from "leva";
 import * as THREE from "three";
+import BackButton from "../components/BackButton";
+import GradientBackground from "../components/GradientBackground";
+import GachaponMachineOpen from "../components/GachaponMachineOpen";
+import { useNavigate } from "react-router";
 
 type file = 
 {
@@ -154,6 +158,7 @@ function calculatePosition(row: number, col: number, params: any) {
 // Three.js image gallery
 function Gallery({ data, params }: any) {
   const { camera } = useThree();
+  const navigate = useNavigate();
   const mouse = useRef({ x: 0, y: 0, tx: 0, ty: 0 });
   const lookAtTarget = useRef(new THREE.Vector3());
   const refs = useRef<THREE.Mesh[]>([]);
@@ -256,6 +261,9 @@ function Gallery({ data, params }: any) {
       ref={addRef}
       position={[m.basePos.x, m.basePos.y, m.basePos.z]}
       rotation={[m.baseRot.x, m.baseRot.y, m.baseRot.z]}
+      onClick={() =>
+        navigate("/gallery", { state: { imageUrl: m.texture.image.src } })
+      }
     >
       <planeGeometry args={[params.imageWidth, params.imageHeight]} />
       <meshBasicMaterial
