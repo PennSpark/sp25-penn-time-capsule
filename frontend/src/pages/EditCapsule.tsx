@@ -51,7 +51,8 @@ export default function EditCapsule() {
 
       {/* Utility buttons */}
       <BackButton />
-      <DeleteButton />
+      <DeleteButton capsuleId={localStorage.getItem("capsuleId") || ""}
+  token={localStorage.getItem("token") || ""}/>
 
       <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 mx-5">
         Edit Capsule
