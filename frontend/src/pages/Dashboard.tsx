@@ -40,8 +40,12 @@ function Dashboard() {
   };
 
   const handleEditCapsule = () => {
-    const capsuleId = capsules[currentIndex]._id;
+    const capsuleId = capsules[currentIndex]._id
+    const capsuleName = capsules[currentIndex].name
+    const capsuleDate = capsules[currentIndex].date
     localStorage.setItem("capsuleId", capsuleId);
+    localStorage.setItem("capsuleName", capsuleName);
+    localStorage.setItem("capsuleDate", capsuleDate);
     navigate("/edit");
   };
 
