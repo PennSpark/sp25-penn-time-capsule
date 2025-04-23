@@ -5,8 +5,7 @@ import { useNavigate } from "react-router";
 import { Calendar, Plus } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
 import GachaponBallsFalling from "../components/GachaponBallsFalling";
-import GachaponMachineIdle from "../components/GachaponMachineIdle";
-import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
+import GachaponMachineAnimation from "../components/GachaponMachineAnimation";
 
 function Onboarding() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -67,7 +66,7 @@ function Onboarding() {
 
           {/* 3D Canvas - same size as dashboard */}
           <div className="absolute inset-0 flex items-center justify-center mt-16 md:mt-20">
-            <GachaponMachineIdle />
+            <GachaponMachineAnimation animation="idle" />
           </div>
 
           <div className="absolute bottom-24 left-0 right-0 px-6">
@@ -93,7 +92,7 @@ function Onboarding() {
 
           {/* 3D Canvas - same size as dashboard */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <GachaponMachineUploadMemory />
+            <GachaponMachineAnimation animation="upload" />
           </div>
 
           <div className="absolute bottom-22 left-0 right-0 px-6">
@@ -169,7 +168,7 @@ function Onboarding() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="border-2 border-white rounded-xl bg-white/10 w-[400px] h-[60%] animate-pulse"></div>
             </div>
-            <GachaponMachineIdle />
+            <GachaponMachineAnimation animation="idle" />
           </div>
 
           {/* Plus “button” – transparent look, not clickable */}
@@ -263,7 +262,7 @@ function Onboarding() {
 
           {/* 3D Canvas */}
           <div className="absolute inset-0 flex items-center justify-center mt-16 md:mt-20">
-            <GachaponMachineIdle />
+            <GachaponMachineAnimation animation="idle" />
           </div>
 
           <div className="absolute bottom-14 right-8 z-20 pointer-events-none">
@@ -310,7 +309,7 @@ function Onboarding() {
 
           {/* 3D Canvas */}
           <div className="absolute inset-0 flex items-center justify-center transform -translate-y-8 mt-16 md:mt-20">
-            <GachaponMachineIdle />
+            <GachaponMachineAnimation animation="idle" />
           </div>
 
           <button className="absolute uppercase w-[170px] max-w-sm text-2xl bottom-32 left-1/2 transform -translate-x-1/2 z-20 bg-white/20 backdrop-blur-md cursor-pointer text-white font-semibold px-6 py-2.5 rounded-xl">
@@ -338,7 +337,7 @@ function Onboarding() {
 
           {/* 3D Canvas */}
           <div className="absolute inset-0 flex items-center justify-center transform -translate-y-8 mt-16 md:mt-20">
-            <GachaponMachineIdle />
+            <GachaponMachineAnimation animation="idle" />
           </div>
 
           <div className="absolute bottom-15 left-1/2 transform -translate-x-1/2 z-20">

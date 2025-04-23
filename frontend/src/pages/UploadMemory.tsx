@@ -4,7 +4,7 @@ import { Upload } from "lucide-react";
 import BackButton from "../components/BackButton";
 import GradientBackground from "../components/GradientBackground";
 import { useNavigate } from "react-router";
-import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
+import GachaponMachineAnimation from "../components/GachaponMachineAnimation";
 
 export default function UploadMemory() {
   const [files, setFiles] = useState<File[]>([]);
@@ -76,7 +76,7 @@ export default function UploadMemory() {
 
       {uploadComplete ? (
         <div className="w-screen h-screen flex flex-col items-center justify-center">
-          <GachaponMachineUploadMemory />
+          <GachaponMachineAnimation animation="upload" />
         </div>
       ) : (
         <div className="py-20 flex flex-col items-center justify-center">

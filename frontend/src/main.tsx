@@ -13,6 +13,7 @@ import EditCapsule from "./pages/EditCapsule";
 import OpenCapsule from "./pages/OpenCapsule";
 import Onboarding from "./pages/Onboarding";
 import GalleryView from "./pages/GalleryView";
+import Customize from "./pages/Customize";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/create" element={<CreateCapsule />} />
           <Route path="/edit" element={<EditCapsule />} />
           <Route path="/upload" element={<UploadMemory />} />
+          <Route path="/customize" element={<Customize />} />
           <Route path="/open" element={<OpenCapsule />} />
           <Route path="/gallery" element={<GalleryView />} />
         </Routes>

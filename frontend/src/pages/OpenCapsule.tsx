@@ -9,8 +9,8 @@ import { Leva, useControls } from "leva";
 import * as THREE from "three";
 import BackButton from "../components/BackButton";
 import GradientBackground from "../components/GradientBackground";
-import GachaponMachineOpen from "../components/GachaponMachineOpen";
 import { useLocation, useNavigate } from "react-router-dom";
+import GachaponMachineAnimation from "../components/GachaponMachineAnimation";
 
 // Enable Three.js built-in cache
 THREE.Cache.enabled = true;
@@ -93,7 +93,7 @@ export default function OpenCapsule() {
               <div className="text-white text-lg">No images found.</div>
             )
           ) : (
-            <GachaponMachineOpen />
+            <GachaponMachineAnimation animation="open" />
           )}
         </div>
       </div>

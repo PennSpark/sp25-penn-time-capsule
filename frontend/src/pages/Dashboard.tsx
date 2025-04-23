@@ -1,16 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Calendar, Grid, ImageIcon, Plus, Code2 } from "lucide-react";
 import GradientBackground from "../components/GradientBackground";
-import GachaponMachineIdle from "../components/GachaponMachineIdle";
-import GachaponMachineOpen from "../components/GachaponMachineOpen";
-import GachaponBallsFalling from "../components/GachaponBallsFalling";
-import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemory";
 import { useNavigate } from "react-router";
 import JoinCapsuleModal from "../components/JoinCapsuleModal";
 import MachineCodeModal from "../components/MachineCodeModal";
 import InfoButton from "../components/InfoButton";
 import OpenButton from "../components/OpenButton";
 import { motion } from "framer-motion";
+import GachaponMachineAnimation from "../components/GachaponMachineAnimation";
 
 type TimeCapsule = {
   _id: string;
@@ -55,6 +52,11 @@ function Dashboard() {
   const handleUploadMemory = () => {
     navigate("/upload");
   };
+
+  const handleCustomizeCapsule = () => {
+    navigate("/customize");
+  };
+
   const handleOpenCapsule = () => {
     const capsuleId = capsules[currentIndex]._id;
     localStorage.setItem("capsuleId", capsuleId);
@@ -226,7 +228,10 @@ function Dashboard() {
 
             {/* 3D Canvas */}
             <div className="absolute inset-0 flex items-center justify-center mt-8 md:mt-12">
-              <GachaponMachineIdle />
+              <GachaponMachineAnimation
+                animation="idle"
+                capsuleId={capsules[currentIndex]._id}
+              />
             </div>
 
             {/* Swipe Navigation */}
@@ -306,7 +311,10 @@ function Dashboard() {
                     >
                       Edit Capsule
                     </button>
-                    <button className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10">
+                    <button
+                      className="py-3 px-6 text-white text-lg text-left cursor-pointer border-b border-white/10 hover:bg-white/10"
+                      onClick={handleCustomizeCapsule}
+                    >
                       Customize
                     </button>
                     <button
