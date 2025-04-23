@@ -17,8 +17,8 @@ function Onboarding() {
     if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Navigate to dashboard when onboarding is complete
-      navigate("/dashboard");
+      // Navigate to login when onboarding is complete
+      navigate("/login");
     }
   };
 

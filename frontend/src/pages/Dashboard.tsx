@@ -207,11 +207,12 @@ function Dashboard() {
                   {new Date(capsules[currentIndex].date).toLocaleDateString(
                     "en-US",
                     {
+                      timeZone: "UTC",
                       year: "numeric",
                       month: "long",
                       day: "numeric",
                     }
-                  )}{" "}
+                  )}
                 </span>
               </div>
             </div>
@@ -272,13 +273,11 @@ function Dashboard() {
             {menuOpen && (
               <div
                 title="Menu"
-                className="absolute z-20 menu-container"
-                style={{
-                  bottom: !isCapsuleOpenable(capsules[currentIndex].date)
-                    ? "140px"
-                    : "400px",
-                  right: "32px",
-                }}
+                className={`absolute z-20 menu-container right-8 ${
+                  !isCapsuleOpenable(capsules[currentIndex].date)
+                    ? "bottom-36"
+                    : "top-28"
+                }`}
               >
                 <div className="glass-background rounded-lg w-fit overflow-hidden">
                   <div className="flex flex-col">

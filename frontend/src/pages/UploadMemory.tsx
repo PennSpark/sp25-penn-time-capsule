@@ -8,6 +8,7 @@ import GachaponMachineUploadMemory from "../components/GachaponMachineUploadMemo
 
 export default function UploadMemory() {
   const [files, setFiles] = useState<File[]>([]);
+  const [tagline, setTagline] = useState<string>("");
   const [uploadComplete, setUploadComplete] = useState(false);
   const backendUrl =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
@@ -82,12 +83,12 @@ export default function UploadMemory() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 mx-5">
             Fill the capsule
           </h1>
-          <h4 className="text-xl sm:text-2xl text-white/60 mb-5 mx-5">
+          <h4 className="text-xl sm:text-2xl text-white/60 mb-8 mx-5">
             Add any memories that capture your story and favorite moments.
           </h4>
           <div
             {...getRootProps()}
-            className="w-[80%] max-w-2xl border-4 h-5/8 glass-background border-white/30 hover:border-white/70 rounded-2xl p-10 flex flex-col items-center justify-center cursor-pointer transition-all duration-300"
+            className="w-[80%] max-w-2xl border-4 glass-background border-white/30 hover:border-white/70 rounded-2xl p-20 flex flex-col items-center justify-center cursor-pointer transition-all duration-300"
           >
             <input {...getInputProps()} multiple />
             <Upload size={64} className="text-white mb-4" />
@@ -97,11 +98,20 @@ export default function UploadMemory() {
                 : "Click or drag to upload files"}
             </p>
           </div>
+          <input
+            type="text"
+            value={tagline}
+            onChange={(e) => setTagline(e.target.value)}
+            maxLength={30}
+            placeholder="Give your memories a name they'll remember."
+            className="text-center w-[80%] max-w-2xl glass-background border-4 border-white/30 hover:border-white/70 text-white placeholder-white/70 text-xl
+                       rounded-2xl px-4 py-4 mt-4 transition duration-300 outline-none"
+          />
           <button
             onClick={handleSubmit}
             disabled={files.length === 0}
             className={`w-[80%] max-w-2xl glass-background hover:brightness-125 text-white text-xl
-                    rounded-2xl py-4 mt-6 font-semibold transition duration-300
+                    rounded-2xl py-6 mt-10 font-semibold transition duration-300
                     ${
                       files.length === 0
                         ? "opacity-50 cursor-not-allowed"
