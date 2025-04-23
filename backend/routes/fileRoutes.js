@@ -1,6 +1,7 @@
 const express = require("express");
 const AWS = require("aws-sdk");
 const multer = require("multer");
+const sharp = require("sharp");
 const TimeCapsule = require("../models/TimeCapsule");
 require("dotenv").config();
 
@@ -21,18 +22,19 @@ const upload = multer({
 });
 
 // Upload file to S3 and update TimeCapsule document
+// Upload file to S3 (with HEIC → JPEG conversion) and update TimeCapsule document
 router.post("/upload/:capsuleId", (req, res) => {
   upload.single("file")(req, res, async (err) => {
+    // Multer errors
     if (err instanceof multer.MulterError) {
-      // handle uploading too big file size
       if (err.code === "LIMIT_FILE_SIZE") {
         return res
           .status(400)
-          .json({ error: "File size exceeds the limit of 2MB" });
+          .json({ error: "File size exceeds the limit of 2 GB" });
       }
       return res.status(400).json({ error: err.message });
     } else if (err) {
-      // handle other errors
+      // other upload errors
       return res.status(500).json({ error: err.message });
     }
 
@@ -43,26 +45,49 @@ router.post("/upload/:capsuleId", (req, res) => {
         return res.status(404).json({ message: "Time Capsule not found" });
       }
 
-      const params = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `timecapsules/${Date.now()}_${req.file.originalname}`, // Unique file key
-        Body: req.file.buffer,
-        ContentType: req.file.mimetype,
-      };
+      // Prepare for possible HEIC conversion
+      let fileBuffer = req.file.buffer;
+      let originalName = req.file.originalname;
+      let contentType = req.file.mimetype;
 
-      // Upload to S3 bucket
-      s3.upload(params, async (err, data) => {
-        if (err) {
-          console.error("S3 upload error:", err);
+      // If it's a HEIC/HEIF image, convert to JPEG
+      const isHeicFile =
+        /\.heic$/i.test(originalName) || /heic/i.test(contentType);
+      if (isHeicFile) {
+        try {
+          fileBuffer = await sharp(req.file.buffer)
+            .jpeg({ quality: 80 })
+            .toBuffer();
+          originalName = originalName.replace(/\.(heic|heif)$/i, ".jpg");
+          contentType = "image/jpeg";
+        } catch (convErr) {
+          console.error("HEIC conversion error:", convErr);
           return res
             .status(500)
-            .json({ message: "Error uploading file", error: err.message });
+            .json({ message: "Failed to convert HEIC to JPEG" });
+        }
+      }
+
+      // Upload (possibly converted) buffer to S3
+      const key = `timecapsules/${Date.now()}_${originalName}`;
+      const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: key,
+        Body: fileBuffer,
+        ContentType: contentType,
+      };
+
+      s3.upload(params, async (s3Err, data) => {
+        if (s3Err) {
+          console.error("S3 upload error:", s3Err);
+          return res
+            .status(500)
+            .json({ message: "Error uploading file", error: s3Err.message });
         }
 
+        // update TimeCapsule document
         const fileUrl = data.Location;
-        const fileType = req.file.mimetype.split("/")[0]; // e.g., "image", "video"
-
-        // Update time capsule with file details
+        const fileType = contentType.split("/")[0]; // e.g. "image", "video"
         capsule.files.push({ url: fileUrl, fileType });
         await capsule.save();
 
