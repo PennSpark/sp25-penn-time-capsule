@@ -12,27 +12,29 @@ export function useGachaStyle(capsuleId?: string) {
     // if no capsuleId, just keep "blue" and don’t fetch
     if (!capsuleId) return;
 
-    fetch(`/api/capsules/${capsuleId}`)
-      .then((r) => r.json())
-      .then((data: { style: Style }) => setStyle(data.style))
-      .catch(() => {
-        /* on error we’ll just leave it as whatever it was */
-      });
+    //TODO: retrieve and output the style of the given timepcapsule based on its capsuleId?
+
+    // fetch(`/api/capsules/${capsuleId}`)
+    //   .then((r) => r.json())
+    //   .then((data: { style: Style }) => setStyle(data.style))
+    //   .catch(() => {
+    //     /* on error we’ll just leave it as whatever it was */
+    //   });
   }, [capsuleId]);
 
   const nextStyle = () => {
-    // don’t attempt to patch if there’s no capsuleId
+    //TODO: update the style attribute of given timepcapsule
     if (!capsuleId) return;
 
-    const idx = STYLES.indexOf(style);
-    const next = STYLES[(idx + 1) % STYLES.length];
-    fetch(`/api/capsules/${capsuleId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ style: next }),
-    }).then((r) => {
-      if (r.ok) setStyle(next);
-    });
+    // const idx = STYLES.indexOf(style);
+    // const next = STYLES[(idx + 1) % STYLES.length];
+    // fetch(`/api/capsules/${capsuleId}`, {
+    //   method: "PATCH",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ style: next }),
+    // }).then((r) => {
+    //   if (r.ok) setStyle(next);
+    // });
   };
 
   return { style, nextStyle };

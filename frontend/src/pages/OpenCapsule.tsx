@@ -30,7 +30,7 @@ export default function OpenCapsule() {
 
   useEffect(() => {
     if (!location.state?.skipAnimation) {
-      const timer = setTimeout(() => setShowCanvas(true), 10000);
+      const timer = setTimeout(() => setShowCanvas(true), 9000);
       return () => clearTimeout(timer);
     }
   }, [location.state]);
