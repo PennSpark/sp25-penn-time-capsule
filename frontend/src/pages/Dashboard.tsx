@@ -10,6 +10,7 @@ import JoinCapsuleModal from "../components/JoinCapsuleModal";
 import MachineCodeModal from "../components/MachineCodeModal";
 import InfoButton from "../components/InfoButton";
 import OpenButton from "../components/OpenButton";
+import { motion } from "framer-motion";
 
 type TimeCapsule = {
   _id: string;
@@ -156,28 +157,34 @@ function Dashboard() {
         <GradientBackground />
 
         {/* View Toggle */}
-        <div className="absolute top-12 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="flex items-center bg-white/30 backdrop-blur-md rounded-full p-1">
+        <div className="absolute top-12 left-1/2 transform -translate-x-1/2 z-10 scale-125">
+          <div className="relative inline-flex isolate items-center bg-white/30 backdrop-blur-md rounded-full p-0">
+            {/* sliding white pill */}
+            <motion.div
+              className="absolute top-0 left-0 h-full w-1/2 bg-white rounded-full -z-10"
+              animate={{ x: viewMode === "swipe" ? 0 : "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            />
+
+            {/* Swipe button */}
             <button
-              className={`p-3 rounded-full ${
-                viewMode === "swipe" ? "bg-white" : "bg-transparent"
-              }`}
+              className="relative cursor-pointer z-10 w-1/2 p-3 flex items-center justify-center rounded-full"
               onClick={() => setViewMode("swipe")}
             >
               <ImageIcon
-                className={`h-5 w-5 ${
+                className={`h-5 w-5 transition-colors duration-300 ${
                   viewMode === "swipe" ? "text-gray-700" : "text-white"
                 }`}
               />
             </button>
+
+            {/* Grid button */}
             <button
-              className={`p-3 rounded-full ${
-                viewMode === "grid" ? "bg-white" : "bg-transparent"
-              }`}
+              className="relative cursor-pointer z-10 w-1/2 p-3 flex items-center justify-center rounded-full"
               onClick={() => setViewMode("grid")}
             >
               <Grid
-                className={`h-5 w-5 ${
+                className={`h-5 w-5 transition-colors duration-300 ${
                   viewMode === "grid" ? "text-gray-700" : "text-white"
                 }`}
               />
