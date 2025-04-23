@@ -15,7 +15,7 @@ export default function Customize() {
       <div className="w-screen h-screen flex flex-col items-center justify-center">
         <GachaponMachineAnimation
           animation="inspect"
-          styles={{ scale: "150%" }}
+          styles={{ scale: "130%" }}
         />
       </div>
     </div>
