@@ -21,8 +21,7 @@ const upload = multer({
   limits: { fileSize: 2 * 1024 * 1024 * 1024 }, // 2GB file limit
 });
 
-// Upload file to S3 and update TimeCapsule document
-// Upload file to S3 (with HEIC → JPEG conversion) and update TimeCapsule document
+// Upload file to S3 (with HEIC to JPEG conversion) and update TimeCapsule document
 router.post("/upload/:capsuleId", (req, res) => {
   upload.single("file")(req, res, async (err) => {
     // Multer errors
