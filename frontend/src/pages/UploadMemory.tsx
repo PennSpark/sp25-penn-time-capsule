@@ -29,6 +29,11 @@ export default function UploadMemory() {
 
     try {
       const capsuleId = localStorage.getItem("capsuleId");
+      if (!capsuleId) {
+        console.error("No capsuleId in localStorage");
+        return;
+      }
+
       const token = localStorage.getItem("token");
 
       if (!capsuleId || !token) {

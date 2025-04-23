@@ -121,6 +121,47 @@ function calculatePosition(row: number, col: number, params: any) {
   return { x, y: posY, z, rotationX, rotationY };
 }
 
+function useMediaTextures(urls: string[]) {
+  // treat mov alongside mp4/webm/ogg
+  const videoRegex = /\.(mp4|webm|ogg|mov)$/i;
+
+  // split out image URLs
+  const imageUrls = urls.filter((u) => !videoRegex.test(u));
+  // preload all images
+  const imageTextures = useTexture(imageUrls);
+
+  return useMemo(() => {
+    return urls.map((url) => {
+      if (videoRegex.test(url)) {
+        // --- Video case ---
+        const video = document.createElement("video");
+        video.src = url;
+        video.crossOrigin = "Anonymous";
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "auto";
+        video.addEventListener("loadeddata", () => video.pause());
+        video.play().catch(() => {
+          /* safari autoplay block */
+        });
+
+        const vt = new THREE.VideoTexture(video);
+        vt.minFilter = THREE.LinearFilter;
+        vt.magFilter = THREE.LinearFilter;
+        vt.generateMipmaps = false;
+        return vt;
+      } else {
+        // --- Image case (use preloaded texture) ---
+        const idx = imageUrls.indexOf(url);
+        const tex = imageTextures[idx]!;
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        return tex;
+      }
+    });
+  }, [urls, imageTextures]);
+}
+
 // Three.js image gallery
 function Gallery({ data, params }: any) {
   const { camera } = useThree();
@@ -131,8 +172,10 @@ function Gallery({ data, params }: any) {
   refs.current = [];
   const addRef = (r: THREE.Mesh) => r && refs.current.push(r);
 
-  // preload all textures and cache them, drei handles automatically
-  const textures = useTexture(data.map((d: any) => d.name));
+  // 1) get an array of URLs
+  const urls = data.map((d: any) => d.name);
+  // 2) build textures (images preloaded via useTexture, videos via VideoTexture)
+  const textures = useMediaTextures(urls);
 
   const planeMeta = useMemo(() => {
     const list: any[] = [];

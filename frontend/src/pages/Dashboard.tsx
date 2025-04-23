@@ -50,10 +50,14 @@ function Dashboard() {
   };
 
   const handleUploadMemory = () => {
+    const capsuleId = capsules[currentIndex]._id;
+    localStorage.setItem("capsuleId", capsuleId);
     navigate("/upload");
   };
 
   const handleCustomizeCapsule = () => {
+    const capsuleId = capsules[currentIndex]._id;
+    localStorage.setItem("capsuleId", capsuleId);
     navigate("/customize");
   };
 
