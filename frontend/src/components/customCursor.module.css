@@ -1,0 +1,26 @@
+/* Hide the default cursor */
+body {
+    cursor: none;
+  }
+    
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    transform: translate3d(-50%, -50%, 0) scale(1); 
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    will-change: transform;
+    z-index: 9999;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6); 
+  }
+  
+  /* Style when hovering over clickable elements */
+  .cursor.hovering {
+    background-color: rgba(255, 105, 180, 0.7); 
+    box-shadow: 0 0 12px rgba(255, 105, 180, 0.6); 
+  }
