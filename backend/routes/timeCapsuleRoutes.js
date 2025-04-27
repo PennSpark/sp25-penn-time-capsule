@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Create New Time Capsule - TESTED AND WORKING
 router.post("/create", authenticateToken, async (req, res) => {
-  const { name, date } = req.body;
+  const { name, date, styles } = req.body;
   const userId = req.user.id; // Get user from signed JWT token (authenicateToken middleware)
 
   try {
@@ -16,7 +16,8 @@ router.post("/create", authenticateToken, async (req, res) => {
       name,
       owner: userId, // Set the user who created it as the owner
       members: [userId],
-      date: date // The user who created it will be added as a member
+      date: date,
+      styles: styles || "blue" // The user who created it will be added as a member
     });
 
     await newCapsule.save();
@@ -42,7 +43,7 @@ router.post("/create", authenticateToken, async (req, res) => {
 });
 
 router.post('/edit', authenticateToken, async(req, res) => {
-  const {capsuleId, name, date} = req.body;
+  const {capsuleId, name, date, styles} = req.body;
   const userId = req.user.id;
 
 
@@ -66,6 +67,7 @@ router.post('/edit', authenticateToken, async(req, res) => {
 
     if (name) capsule.name = name;
     if (date) capsule.date = date;
+    if(styles) capsule.styles = styles;
 
     await capsule.save();
     res.status(201).json({
@@ -83,6 +85,7 @@ router.post('/edit', authenticateToken, async(req, res) => {
 router.post("/join/:capsuleId", authenticateToken, async (req, res) => {
   const { capsuleId } = req.params;
   const userId = req.user.id; // Get the user from JWT token
+  console.log("bro");
 
   try {
     const capsule = await TimeCapsule.findById(capsuleId);

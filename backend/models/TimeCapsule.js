@@ -15,6 +15,7 @@ const TimeCapsuleSchema = new mongoose.Schema({
 
   ],
   createdAt: { type: Date, default: Date.now },
+  styles: {type: String, required: true}
 });
 
 module.exports = mongoose.model("TimeCapsule", TimeCapsuleSchema);
