@@ -14,11 +14,14 @@ import OpenCapsule from "./pages/OpenCapsule";
 import Onboarding from "./pages/Onboarding";
 import GalleryView from "./pages/GalleryView";
 import Customize from "./pages/Customize";
+import CustomCursor from "./components/CustomCursor"
+
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <BrowserRouter>
+      <CustomCursor /> 
         <Routes>
           <Route path="/" element={<Onboarding />} />
           <Route path="/dashboard" element={<Dashboard />} />
