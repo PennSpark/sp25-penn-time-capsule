@@ -67,7 +67,8 @@ router.post('/edit', authenticateToken, async(req, res) => {
 
     if (name) capsule.name = name;
     if (date) capsule.date = date;
-    if(styles) capsule.styles = styles;
+    capsule.styles = styles || "blue";
+    
 
     await capsule.save();
     res.status(201).json({
