@@ -50,7 +50,7 @@ const Register: React.FC = () => {
     setConfirmPassword(e.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
@@ -66,7 +66,7 @@ const Register: React.FC = () => {
     }
 
     try {
-      const response = axios.post(`${backEndUrl}/api/auth/register`, {
+      await axios.post(`${backEndUrl}/api/auth/register`, {
         username,
         email,
         password,
@@ -74,6 +74,8 @@ const Register: React.FC = () => {
       navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);
+      res.status(500).send("Server Error");
+
       setErrorMessage(true);
     }
   };
@@ -118,7 +120,7 @@ const Register: React.FC = () => {
                 required
                 placeholder=" "
                 autoComplete="off"
-                onChange={handleNameChange}
+                onChange={handleUsernameChange}
               />
               <label
                 htmlFor="name"
@@ -140,7 +142,7 @@ const Register: React.FC = () => {
                 required
                 placeholder=" "
                 autoComplete="off"
-                onChange={handleNameChange}
+                onChange={handleEmailChange}
               />
               <label
                 htmlFor="email"
