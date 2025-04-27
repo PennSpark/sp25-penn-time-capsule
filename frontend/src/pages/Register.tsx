@@ -303,7 +303,7 @@ const Register: React.FC = () => {
               onClick={() => googleSignup()}
               className="google-button flex items-center justify-center gap-2"
             >
-              Sign in with Google
+              Sign up with Google
             </button>
           </form>
           <p id="fineprint-agree">

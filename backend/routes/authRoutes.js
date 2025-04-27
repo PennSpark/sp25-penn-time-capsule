@@ -56,9 +56,14 @@ router.post('/google/register', async (req, res) => {
   const { access_token } = req.body;
   try {
     // Fetch user info using the access token
-    const response = await axios.get(
-      `https://openidconnect.googleapis.com/v1/userinfo?access_token=${access_token}`
-    );
+    // const response = await axios.get(
+    //   `https://openidconnect.googleapis.com/v1/userinfo?access_token=${access_token}`
+    // );
+    const response = await axios.get(`https://openidconnect.googleapis.com/v1/userinfo`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
     const payload = response.data;
     const { email, name, sub: googleId } = payload;
     
