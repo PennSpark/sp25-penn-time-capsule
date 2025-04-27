@@ -4,12 +4,14 @@ type JoinCapsuleModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onJoin: (code: string) => void;
+  error?: String;
 };
 
 export default function JoinCapsuleModal({
   isOpen,
   onClose,
   onJoin,
+  error
 }: JoinCapsuleModalProps) {
   const [code, setCode] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
@@ -47,7 +49,11 @@ export default function JoinCapsuleModal({
           onChange={(e) => setCode(e.target.value)}
           className="w-full mb-4 px-4 py-3 rounded-lg bg-white/30 text-lg text-white placeholder-white/85 focus:outline-none"
         />
-
+        {error && (
+          <p className="text-base text-red-500 text-center mt-1 mb-3">
+            {error}
+          </p>
+        )}
         <button
           onClick={() => onJoin(code)}
           className="w-full cursor-pointer py-3 rounded-lg bg-white/30 text-lg text-white font-medium hover:bg-white/40 transition"

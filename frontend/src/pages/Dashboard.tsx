@@ -28,6 +28,7 @@ function Dashboard() {
   ]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [joinError, setJoinError] = useState<String>("");
   const plusButtonRef = useRef<HTMLButtonElement>(null);
   const backend_url: string =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
@@ -135,11 +136,38 @@ function Dashboard() {
   const [joinModalOpen, setJoinModalOpen] = useState(false);
 
   const handleOpenJoinModal = () => setJoinModalOpen(true);
-  const handleCloseJoinModal = () => setJoinModalOpen(false);
-
-  const handleJoin = (code: string) => {
-    //TODO call api to join capsule
+  const handleCloseJoinModal = () => {
+    setJoinError("");
     setJoinModalOpen(false);
+  };
+
+  const handleJoin = async (code: string) => {
+    //TODO call api to join capsule
+    try {
+      const res = await fetch(`${backend_url}/api/timecapsule/join/${code}`, 
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      const data = await res.json();
+      
+      if(!res.ok) {
+        setJoinError(data.message || "Error Joining Capsule");
+        console.error("error joining capsule", data.message);
+        return;
+      }
+      setCapsules((prev) => [...prev, data.Capsule])
+      setCurrentIndex(capsules.length);
+      setJoinModalOpen(false);
+      setJoinError("");
+      
+
+    } catch(err) {
+      console.error(err);
+    }
   };
 
   const [machineCodeModalOpen, setMachineCodeModalOpen] = useState(false);
@@ -374,6 +402,7 @@ function Dashboard() {
         isOpen={joinModalOpen}
         onClose={handleCloseJoinModal}
         onJoin={handleJoin}
+        error={joinError}
       />
       <MachineCodeModal
         code={capsules[currentIndex]._id}
