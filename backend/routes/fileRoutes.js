@@ -39,6 +39,8 @@ router.post("/upload/:capsuleId", (req, res) => {
 
     try {
       const { capsuleId } = req.params;
+      const { tagline, uploadedBy } = req.body; // ✅ grab tagline + uploadedBy from form
+
       const capsule = await TimeCapsule.findById(capsuleId);
       if (!capsule) {
         return res.status(404).json({ message: "Time Capsule not found" });
@@ -87,7 +89,13 @@ router.post("/upload/:capsuleId", (req, res) => {
         // update TimeCapsule document
         const fileUrl = data.Location;
         const fileType = contentType.split("/")[0]; // e.g. "image", "video"
-        capsule.files.push({ url: fileUrl, fileType });
+
+        capsule.files.push({ 
+          url: fileUrl, 
+          fileType, 
+          tagline: tagline || "",      // ✅ save tagline (default empty string if missing)
+          uploadedBy: uploadedBy || "Anonymous" // ✅ save uploader username
+        });
         await capsule.save();
 
         res

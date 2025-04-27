@@ -8,8 +8,11 @@ const TimeCapsuleSchema = new mongoose.Schema({
   files: [
     {
       url: { type: String, required: true },
-      fileType: { type: String, required: true }, // i.e, image, video, document
+      fileType: { type: String, required: true }, // "image", "video", etc
+      tagline: { type: String, default: "" }, // <--- new
+      uploadedBy: { type: String, required: true }, // <--- new (username)
     },
+
   ],
   createdAt: { type: Date, default: Date.now },
 });

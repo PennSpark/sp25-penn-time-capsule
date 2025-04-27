@@ -35,6 +35,8 @@ export default function UploadMemory() {
       }
 
       const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId") || "Anonymous";
+      console.log(userId);
 
       if (!capsuleId || !token) {
         console.error("Missing capsule ID or token");
@@ -43,7 +45,9 @@ export default function UploadMemory() {
 
       for (const file of files) {
         const form = new FormData();
-        form.append("file", file); // must match upload.single("file") in backend
+        form.append("file", file);
+        form.append("tagline", tagline);
+        form.append("uploadedBy", userId); // must match upload.single("file") in backend
 
         const res = await fetch(`${backendUrl}/api/files/upload/${capsuleId}`, {
           method: "POST",
